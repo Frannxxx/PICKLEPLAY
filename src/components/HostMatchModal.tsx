@@ -55,23 +55,38 @@ export default function HostMatchModal({ isOpen, onClose, onMatchCreated }: Host
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-5 shadow-2xl relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-1 text-slate-400 hover:text-white rounded-full bg-slate-800"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-            <Trophy className="w-5 h-5" />
-          </div>
-          <div>
-            <h2 className="text-base font-bold text-white">Host Rated Match</h2>
-            <p className="text-xs text-slate-400">DUPR & ELO sanctioned game</p>
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden">
+        {/* Match Hosting Header Picture */}
+        <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-950 border-b border-slate-800 group">
+          <img
+            src="/src/assets/images/pickleball_match_smash_1790518380509.jpg"
+            alt="Host Rated Match"
+            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+          <button
+            onClick={onClose}
+            className="absolute top-3.5 right-3.5 p-1.5 text-slate-300 hover:text-white rounded-full bg-slate-950/80 border border-slate-700 backdrop-blur-md"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <div className="absolute bottom-2.5 left-4 flex items-center gap-2">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-slate-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+              Season 1 Ladder Fixture
+            </span>
           </div>
         </div>
+
+        <div className="p-5 pt-3">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+              <Trophy className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-white">Host Rated Match</h2>
+              <p className="text-xs text-slate-400">DUPR & ELO sanctioned match queued for certified referee</p>
+            </div>
+          </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Court Facility */}
@@ -171,6 +186,7 @@ export default function HostMatchModal({ isOpen, onClose, onMatchCreated }: Host
             )}
           </button>
         </form>
+        </div>
       </div>
     </div>
   );

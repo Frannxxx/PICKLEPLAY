@@ -68,22 +68,35 @@ export default function LeaderboardScreen() {
 
   return (
     <div className="flex flex-col space-y-4 pb-20 px-4 pt-3 max-w-2xl mx-auto w-full">
-      {/* Header */}
-      <div>
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-amber-400" />
-            <h1 className="text-xl font-black text-white tracking-tight font-['Cabinet_Grotesk']">
-              COMPETITIVE LADDER
-            </h1>
-          </div>
-          <span className="text-xs text-slate-400 font-mono">
-            Season 1 · Elo Rated
-          </span>
+      {/* Header with Championship Trophy Picture Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 shadow-xl p-5">
+        <div className="absolute inset-0 z-0 opacity-25 pointer-events-none">
+          <img
+            src="/src/assets/images/pickleball_ladder_trophy_1790516003619.jpg"
+            alt="Season 1 Tournament Trophy"
+            className="w-full h-full object-cover object-right"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent" />
         </div>
-        <p className="text-xs text-slate-400">
-          Official bias-free ranking ladder. Points and tiers verified by certified referees.
-        </p>
+
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow">
+                <Trophy className="w-4 h-4" />
+              </div>
+              <h1 className="text-xl font-black text-white tracking-tight font-['Cabinet_Grotesk']">
+                COMPETITIVE LADDER
+              </h1>
+            </div>
+            <span className="text-xs text-amber-300 font-mono font-bold bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-full shadow">
+              Season 1 · Elo Rated
+            </span>
+          </div>
+          <p className="text-xs text-slate-300 max-w-md">
+            Official bias-free ranking ladder for Tagum City. Points, matches, and tiers verified exclusively by certified referees.
+          </p>
+        </div>
       </div>
 
       {/* Search Bar */}

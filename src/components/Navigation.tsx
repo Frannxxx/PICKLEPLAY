@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext.tsx';
+import { useNotifications } from '../../context/NotificationContext.tsx';
 import {
   Trophy,
   Calendar,
@@ -11,20 +12,24 @@ import {
   Database,
   Smartphone,
   Maximize2,
+  Bell,
 } from 'lucide-react';
 
 interface NavigationProps {
   currentTab: string;
   onSelectTab: (tab: string) => void;
   onOpenSchemaModal: () => void;
+  onOpenNotifications?: () => void;
 }
 
 export function TopBar({
   currentTab,
   onSelectTab,
   onOpenSchemaModal,
+  onOpenNotifications,
 }: NavigationProps) {
   const { user, isCourtAdmin, logout, switchUser } = useAuth();
+  const { unreadCount } = useNotifications();
 
   const handleRoleToggle = () => {
     if (isCourtAdmin) {
@@ -101,14 +106,25 @@ export function TopBar({
         >
           Courts & Stripe
         </button>
+        {isCourtAdmin && (
+          <button
+            onClick={() => onSelectTab('scorekeeper')}
+            className={`transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+              currentTab === 'scorekeeper' ? 'text-emerald-400 font-bold' : 'hover:text-slate-200'
+            }`}
+          >
+            <Shield className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Referee Scorekeeper</span>
+          </button>
+        )}
         <button
-          onClick={() => onSelectTab('scorekeeper')}
+          onClick={() => onSelectTab('profile')}
           className={`transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-            currentTab === 'scorekeeper' ? 'text-emerald-400 font-bold' : 'hover:text-slate-200'
+            currentTab === 'profile' ? 'text-emerald-400 font-bold' : 'hover:text-slate-200'
           }`}
         >
-          <Shield className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Referee Scorekeeper {isCourtAdmin ? '(Active)' : '(Admin Only)'}</span>
+          <User className="w-3.5 h-3.5 text-emerald-400" />
+          <span>My Profile</span>
         </button>
       </nav>
 
@@ -122,6 +138,20 @@ export function TopBar({
         >
           <Database className="w-3.5 h-3.5 text-emerald-400" />
           <span>SQL & RLS</span>
+        </button>
+
+        {/* Notification Bell Button */}
+        <button
+          onClick={onOpenNotifications}
+          className="relative w-9 h-9 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 flex items-center justify-center active:scale-95 transition-all shadow"
+          title="Notifications Center"
+        >
+          <Bell className="w-4 h-4 text-emerald-400" />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-emerald-500 text-slate-950 font-black text-[9px] font-mono shadow-md ring-2 ring-slate-950">
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </span>
+          )}
         </button>
 
         {/* Quick Role Switcher Pill */}
@@ -172,17 +202,25 @@ export function BottomTabBar({
 }) {
   const { isCourtAdmin } = useAuth();
 
-  const tabs = [
-    { id: 'dashboard', label: 'Dashboard', icon: Activity },
-    { id: 'leaderboard', label: 'Ladder', icon: Trophy },
-    { id: 'courts', label: 'Courts', icon: Calendar },
-    {
-      id: 'scorekeeper',
-      label: isCourtAdmin ? 'Scorekeeper' : 'Referees',
-      icon: Shield,
-      badge: isCourtAdmin ? 'ADMIN' : 'GATE',
-    },
-  ];
+  const tabs = isCourtAdmin
+    ? [
+        { id: 'dashboard', label: 'Dashboard', icon: Activity },
+        { id: 'leaderboard', label: 'Ladder', icon: Trophy },
+        { id: 'courts', label: 'Courts', icon: Calendar },
+        {
+          id: 'scorekeeper',
+          label: 'Referee',
+          icon: Shield,
+          badge: 'ADMIN',
+        },
+        { id: 'profile', label: 'Profile', icon: User },
+      ]
+    : [
+        { id: 'dashboard', label: 'Dashboard', icon: Activity },
+        { id: 'leaderboard', label: 'Ladder', icon: Trophy },
+        { id: 'courts', label: 'Courts', icon: Calendar },
+        { id: 'profile', label: 'Profile', icon: User },
+      ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 h-16 bg-slate-950/95 backdrop-blur-md border-t border-slate-800/80 px-2 flex items-center justify-around max-w-2xl mx-auto">

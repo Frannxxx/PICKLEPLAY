@@ -187,10 +187,37 @@ export default function AuthPortal({ initialMode = 'login' }: AuthPortalProps) {
         </div>
 
         {/* Right Form Column: Sign In or Register */}
-        <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between">
+        <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden bg-slate-900/95">
+          {/* Subtle background ambient overlay */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+
           <div>
+            {/* Visual Action Banner with Gear Picture */}
+            <div className="relative h-28 sm:h-32 w-full rounded-2xl overflow-hidden mb-5 border border-slate-800 shadow-xl group">
+              <img
+                src="/src/assets/images/auth_pickleball_gear_1790517058648.jpg"
+                alt="PicklePlay Pro Access"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+              <div className="absolute top-2.5 right-3">
+                <span className="text-[10px] font-mono font-bold text-emerald-300 bg-slate-950/85 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-emerald-500/40 shadow">
+                  Season 1 Live
+                </span>
+              </div>
+              <div className="absolute bottom-2.5 left-3.5 right-3.5 flex items-center justify-between text-xs">
+                <span className="font-bold text-white tracking-wide text-xs flex items-center gap-1.5 drop-shadow">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Tagum City Competitive Circuit
+                </span>
+                <span className="text-[10px] text-slate-300 font-mono hidden sm:inline">
+                  Verified Court Scoring
+                </span>
+              </div>
+            </div>
+
             {/* Mode Switcher Tabs */}
-            <div className="flex items-center gap-1 p-1 bg-slate-950 rounded-xl border border-slate-800 mb-6">
+            <div className="flex items-center gap-1 p-1 bg-slate-950 rounded-xl border border-slate-800 mb-5">
               <button
                 type="button"
                 onClick={() => {

@@ -15,6 +15,7 @@ import {
   Sparkles,
   AlertCircle,
   RefreshCw,
+  MapPin,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -239,17 +240,43 @@ export default function ScorekeeperScreen({ onScoreSubmitted }: ScorekeeperScree
       {selectedMatch ? (
         <div className="space-y-4">
           {/* DIGITAL SCOREPAD INTERFACE */}
-          <div className="rounded-3xl bg-slate-900 border border-slate-800 p-5 shadow-2xl relative overflow-hidden">
-            <div className="flex items-center justify-between text-xs text-slate-400 pb-3 mb-4 border-b border-slate-800">
-              <span className="font-semibold text-white">
-                {selectedMatch.court?.name || 'Championship Court'}
-              </span>
-              <span className="font-mono text-emerald-400 uppercase text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/30">
-                Official Match #{selectedMatch.id.slice(-4)}
-              </span>
+          <div className="rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl relative overflow-hidden">
+            {/* Panoramic Championship Referee Picture Header */}
+            <div className="relative h-32 sm:h-40 w-full overflow-hidden bg-slate-950">
+              <img
+                src="/src/assets/images/referee_scorepad_hero_1790517908238.jpg"
+                alt="Official Referee Match Arena"
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+              <div className="absolute top-3 left-4 right-4 flex items-center justify-between text-xs">
+                <span className="px-3 py-1 rounded-full bg-slate-950/85 backdrop-blur-md border border-emerald-500/40 text-emerald-400 font-bold text-[10px] uppercase tracking-wider flex items-center gap-1.5 shadow">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Live Official Scorepad
+                </span>
+                <span className="font-mono text-emerald-400 uppercase text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-950/85 backdrop-blur-md border border-slate-700 shadow">
+                  Match #{selectedMatch.id.slice(-4)}
+                </span>
+              </div>
+              <div className="absolute bottom-2.5 left-4">
+                <h2 className="text-base sm:text-lg font-black text-white tracking-tight flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-emerald-400" />
+                  <span>{selectedMatch.court?.name || 'Tagum Championship Arena'}</span>
+                </h2>
+              </div>
             </div>
 
-            {/* TEAM SCOREPAD COLUMNS */}
+            <div className="p-5 pt-3">
+              <div className="flex items-center justify-between text-xs text-slate-400 pb-3 mb-4 border-b border-slate-800">
+                <span className="font-medium text-slate-300">
+                  Certified Court Referee Live Controls
+                </span>
+                <span className="font-mono text-emerald-400 uppercase text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/30">
+                  {selectedMatch.game_type.toUpperCase()}
+                </span>
+              </div>
+
+              {/* TEAM SCOREPAD COLUMNS */}
             <div className="grid grid-cols-2 gap-4">
               {/* TEAM A */}
               <div className="flex flex-col items-center p-3 rounded-2xl bg-slate-950/70 border border-slate-800">
@@ -374,6 +401,7 @@ export default function ScorekeeperScreen({ onScoreSubmitted }: ScorekeeperScree
               )}
             </button>
           </div>
+        </div>
 
           {/* POST-SUBMISSION ELO & XP BREAKDOWN RESULT */}
           {submissionResult && (

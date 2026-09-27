@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext.tsx';
+import { NotificationProvider, useNotifications } from '../context/NotificationContext.tsx';
 import AuthPortal from './components/AuthPortal.tsx';
 import DashboardScreen from '../app/(tabs)/index.tsx';
 import LeaderboardScreen from '../app/(tabs)/leaderboard.tsx';
 import CourtsScreen from '../app/(tabs)/courts.tsx';
 import ScorekeeperScreen from '../app/(tabs)/scorekeeper.tsx';
+import ProfileScreen from './components/ProfileScreen.tsx';
 import { TopBar, BottomTabBar } from './components/Navigation.tsx';
 import SchemaInspectorModal from './components/SchemaInspectorModal.tsx';
 import HostMatchModal from './components/HostMatchModal.tsx';
+import NotificationDrawer, { NotificationToast } from './components/NotificationDrawer.tsx';
 import { EloAdjustmentResult } from './types.ts';
 import { Plus } from 'lucide-react';
 
 function AppContent() {
   const { user, isLoading, isCourtAdmin } = useAuth();
+  const { addNotification } = useNotifications();
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
   const [isSchemaModalOpen, setIsSchemaModalOpen] = useState<boolean>(false);
   const [isHostMatchModalOpen, setIsHostMatchModalOpen] = useState<boolean>(false);
+  const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] = useState<boolean>(false);
   const [lastEloResult, setLastEloResult] = useState<EloAdjustmentResult | null>(null);
 
   if (isLoading) {
@@ -55,9 +60,19 @@ function AppContent() {
           <ScorekeeperScreen
             onScoreSubmitted={(result) => {
               setLastEloResult(result);
+              addNotification({
+                title: `Match Finalized · Team ${result.winnerTeam} Victorious!`,
+                message: `Official match finalized: ${result.teamAScore}-${result.teamBScore}. ELO points & DUPR recalculated.`,
+                type: 'match',
+                targetTab: 'leaderboard',
+                actionLabel: 'Inspect Ladder',
+                badge: `FINAL ${result.teamAScore}-${result.teamBScore}`,
+              });
             }}
           />
         );
+      case 'profile':
+        return <ProfileScreen onNavigateTab={setCurrentTab} />;
       default:
         return <DashboardScreen onNavigateTab={setCurrentTab} />;
     }
@@ -70,6 +85,7 @@ function AppContent() {
         currentTab={currentTab}
         onSelectTab={setCurrentTab}
         onOpenSchemaModal={() => setIsSchemaModalOpen(true)}
+        onOpenNotifications={() => setIsNotificationDrawerOpen(true)}
       />
 
       {/* Main Spacious Content Container (No phone simulator frame) */}
@@ -82,6 +98,9 @@ function AppContent() {
         <BottomTabBar currentTab={currentTab} onSelectTab={setCurrentTab} />
       </div>
 
+      {/* Floating Live Notification Toast */}
+      <NotificationToast onNavigateTab={setCurrentTab} />
+
       {/* Host Match Floating Action Pill */}
       {currentTab === 'dashboard' && (
         <button
@@ -93,6 +112,13 @@ function AppContent() {
         </button>
       )}
 
+      {/* Notifications Drawer */}
+      <NotificationDrawer
+        isOpen={isNotificationDrawerOpen}
+        onClose={() => setIsNotificationDrawerOpen(false)}
+        onNavigateTab={setCurrentTab}
+      />
+
       {/* Modals */}
       <SchemaInspectorModal
         isOpen={isSchemaModalOpen}
@@ -103,6 +129,14 @@ function AppContent() {
         isOpen={isHostMatchModalOpen}
         onClose={() => setIsHostMatchModalOpen(false)}
         onMatchCreated={() => {
+          addNotification({
+            title: 'New Match Hosted on Center Court',
+            message: 'Your fixture is now live on the referee queue. Awaiting official court scorer.',
+            type: 'match',
+            targetTab: isCourtAdmin ? 'scorekeeper' : 'dashboard',
+            actionLabel: 'View Match',
+            badge: 'HOSTED',
+          });
           if (isCourtAdmin) setCurrentTab('scorekeeper');
         }}
       />
@@ -113,7 +147,9 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <NotificationProvider>
+        <AppContent />
+      </NotificationProvider>
     </AuthProvider>
   );
 }

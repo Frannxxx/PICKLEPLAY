@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext.tsx';
+import { useNotifications } from '../../context/NotificationContext.tsx';
 import { api } from '../../services/api.ts';
 import { Court, Booking } from '../../src/types.ts';
 import {
@@ -18,6 +19,7 @@ import {
 
 export default function CourtsScreen() {
   const { user } = useAuth();
+  const { addNotification } = useNotifications();
   const [courts, setCourts] = useState<Court[]>([]);
   const [selectedCourt, setSelectedCourt] = useState<Court | null>(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -65,6 +67,15 @@ export default function CourtsScreen() {
         ...intentRes.booking,
         payment_status: 'succeeded',
       });
+
+      addNotification({
+        title: `${selectedCourt.name} · Court #${selectedCourtNum} Reserved`,
+        message: `Confirmed booking for ${selectedTimeSlot} (${durationHours} hr). Stripe payment verified. Access pass active.`,
+        type: 'court',
+        targetTab: 'courts',
+        actionLabel: 'View Court Pass',
+        badge: 'PAID · STRIPE',
+      });
     } catch (err: any) {
       console.error('Booking payment error:', err);
     } finally {
@@ -84,20 +95,35 @@ export default function CourtsScreen() {
 
   return (
     <div className="flex flex-col space-y-4 pb-20 px-4 pt-3 max-w-2xl mx-auto w-full">
-      {/* Header */}
-      <div>
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-emerald-400" />
-            <h1 className="text-xl font-black text-white tracking-tight font-['Cabinet_Grotesk']">
-              COURT RESERVATIONS
-            </h1>
-          </div>
-          <span className="text-xs text-slate-400 font-mono">Tagum City, PH</span>
+      {/* Header with Tagum Club Picture Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 shadow-xl p-5">
+        <div className="absolute inset-0 z-0 opacity-25 pointer-events-none">
+          <img
+            src="/src/assets/images/tagum_pickleball_club_1790516250921.jpg"
+            alt="Tagum City Pickleball Club"
+            className="w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent" />
         </div>
-        <p className="text-xs text-slate-400">
-          Championship verified courts in Tagum City, Davao del Norte with official DUPR cameras and night lighting.
-        </p>
+
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow">
+                <MapPin className="w-4 h-4" />
+              </div>
+              <h1 className="text-xl font-black text-white tracking-tight font-['Cabinet_Grotesk']">
+                COURT RESERVATIONS
+              </h1>
+            </div>
+            <span className="text-xs text-emerald-300 font-mono font-bold bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-full shadow">
+              Tagum City, PH
+            </span>
+          </div>
+          <p className="text-xs text-slate-300 max-w-md">
+            Championship verified venues in Tagum City, Davao del Norte with official DUPR cameras, Stripe checkout, and night lighting.
+          </p>
+        </div>
       </div>
 
       {/* Courts List */}
