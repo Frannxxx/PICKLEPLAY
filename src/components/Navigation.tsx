@@ -13,6 +13,7 @@ import {
   Smartphone,
   Maximize2,
   Bell,
+  Settings,
 } from 'lucide-react';
 
 interface NavigationProps {
@@ -20,6 +21,7 @@ interface NavigationProps {
   onSelectTab: (tab: string) => void;
   onOpenSchemaModal: () => void;
   onOpenNotifications?: () => void;
+  onOpenSettings?: () => void;
 }
 
 export function TopBar({
@@ -27,17 +29,18 @@ export function TopBar({
   onSelectTab,
   onOpenSchemaModal,
   onOpenNotifications,
+  onOpenSettings,
 }: NavigationProps) {
   const { user, isCourtAdmin, logout, switchUser } = useAuth();
   const { unreadCount } = useNotifications();
 
   const handleRoleToggle = () => {
     if (isCourtAdmin) {
-      // Switch to Taylor Vance (Player)
+      // Switch to Frannnxx (Player)
       switchUser({
         id: '00000000-0000-0000-0000-000000000002',
-        full_name: 'Taylor Vance',
-        email: 'taylor@pickleplay.com',
+        full_name: 'Frannnxx',
+        email: 'franx000002@gmail.com',
         role: 'player',
         rank_points: 1680,
         rank_tier: 'Gold',
@@ -46,7 +49,7 @@ export function TopBar({
         losses: 19,
         dupr_id: 'DUPR-54812',
         skill_rating: 4.15,
-        avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80',
+        avatar_url: '/src/assets/images/frannnxx_avatar_1791277042121.jpg',
       });
     } else {
       // Switch to Coach Marcus (Court Admin)
@@ -96,7 +99,7 @@ export function TopBar({
             currentTab === 'leaderboard' ? 'text-emerald-400 font-bold' : 'hover:text-slate-200'
           }`}
         >
-          Ladder Rankings
+          Leaderboards
         </button>
         <button
           onClick={() => onSelectTab('courts')}
@@ -154,6 +157,15 @@ export function TopBar({
           )}
         </button>
 
+        {/* Settings Button */}
+        <button
+          onClick={onOpenSettings}
+          className="w-9 h-9 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 flex items-center justify-center active:scale-95 transition-all shadow"
+          title="Platform Preferences & Settings"
+        >
+          <Settings className="w-4 h-4 text-slate-300 hover:text-emerald-400 transition-colors" />
+        </button>
+
         {/* Quick Role Switcher Pill */}
         {user && (
           <button
@@ -205,7 +217,7 @@ export function BottomTabBar({
   const tabs = isCourtAdmin
     ? [
         { id: 'dashboard', label: 'Dashboard', icon: Activity },
-        { id: 'leaderboard', label: 'Ladder', icon: Trophy },
+        { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
         { id: 'courts', label: 'Courts', icon: Calendar },
         {
           id: 'scorekeeper',
@@ -217,7 +229,7 @@ export function BottomTabBar({
       ]
     : [
         { id: 'dashboard', label: 'Dashboard', icon: Activity },
-        { id: 'leaderboard', label: 'Ladder', icon: Trophy },
+        { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
         { id: 'courts', label: 'Courts', icon: Calendar },
         { id: 'profile', label: 'Profile', icon: User },
       ];

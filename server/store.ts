@@ -1,4 +1,4 @@
-import { Profile, Court, Match, Booking, LeaderboardEntry, MatchPlayer } from '../src/types.ts';
+import { Profile, Court, Match, Booking, LeaderboardEntry, MatchPlayer, CourtReview } from '../src/types.ts';
 
 // Initial Mock Profiles
 let profiles: Profile[] = [
@@ -19,8 +19,8 @@ let profiles: Profile[] = [
   },
   {
     id: '00000000-0000-0000-0000-000000000002',
-    full_name: 'Taylor Vance',
-    email: 'taylor@pickleplay.com',
+    full_name: 'Frannnxx',
+    email: 'franx000002@gmail.com',
     role: 'player',
     rank_points: 1680,
     rank_tier: 'Gold',
@@ -29,7 +29,7 @@ let profiles: Profile[] = [
     losses: 19,
     dupr_id: 'DUPR-54812',
     skill_rating: 4.15,
-    avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar_url: '/src/assets/images/frannnxx_avatar_1791277042121.jpg',
     created_at: new Date(Date.now() - 45 * 86400000).toISOString(),
   },
   {
@@ -358,6 +358,143 @@ let matches: Match[] = [
       },
     ],
   },
+  {
+    id: '33333333-3333-3333-3333-333333333335',
+    host_id: '00000000-0000-0000-0000-000000000002',
+    court_id: '11111111-1111-1111-1111-111111111111',
+    scheduled_at: new Date(Date.now() - 24 * 3600000).toISOString(),
+    game_type: 'singles',
+    min_rating: 3.5,
+    max_rating: 5.0,
+    status: 'completed',
+    team_a_score: 11,
+    team_b_score: 7,
+    scored_by_admin_id: '00000000-0000-0000-0000-000000000001',
+    winner_team: 'A',
+    completed_at: new Date(Date.now() - 23 * 3600000).toISOString(),
+    created_at: new Date(Date.now() - 25 * 3600000).toISOString(),
+    court: courts[0],
+    players: [
+      {
+        id: 'mp-14',
+        match_id: '33333333-3333-3333-3333-333333333335',
+        player_id: '00000000-0000-0000-0000-000000000002',
+        team: 'A',
+        player: profiles[1], // Taylor Vance
+        rating_before: 1656,
+        rating_after: 1680,
+        xp_earned: 220,
+      },
+      {
+        id: 'mp-15',
+        match_id: '33333333-3333-3333-3333-333333333335',
+        player_id: '00000000-0000-0000-0000-000000000003',
+        team: 'B',
+        player: profiles[2], // Jordan Cruz
+        rating_before: 1964,
+        rating_after: 1940,
+        xp_earned: 80,
+      },
+    ],
+  },
+  {
+    id: '33333333-3333-3333-3333-333333333336',
+    host_id: '00000000-0000-0000-0000-000000000002',
+    court_id: '22222222-2222-2222-2222-222222222222',
+    scheduled_at: new Date(Date.now() - 72 * 3600000).toISOString(),
+    game_type: 'doubles',
+    min_rating: 3.5,
+    max_rating: 4.5,
+    status: 'completed',
+    team_a_score: 11,
+    team_b_score: 9,
+    scored_by_admin_id: '00000000-0000-0000-0000-000000000001',
+    winner_team: 'A',
+    completed_at: new Date(Date.now() - 71 * 3600000).toISOString(),
+    created_at: new Date(Date.now() - 73 * 3600000).toISOString(),
+    court: courts[1],
+    players: [
+      {
+        id: 'mp-16',
+        match_id: '33333333-3333-3333-3333-333333333336',
+        player_id: '00000000-0000-0000-0000-000000000002',
+        team: 'A',
+        player: profiles[1], // Taylor Vance
+        rating_before: 1638,
+        rating_after: 1656,
+        xp_earned: 190,
+      },
+      {
+        id: 'mp-17',
+        match_id: '33333333-3333-3333-3333-333333333336',
+        player_id: '00000000-0000-0000-0000-000000000008',
+        team: 'A',
+        player: profiles[7], // Chloe Bennett
+        rating_before: 1475,
+        rating_after: 1493,
+        xp_earned: 185,
+      },
+      {
+        id: 'mp-18',
+        match_id: '33333333-3333-3333-3333-333333333336',
+        player_id: '00000000-0000-0000-0000-000000000005',
+        team: 'B',
+        player: profiles[4], // Devon Hayes
+        rating_before: 1820,
+        rating_after: 1802,
+        xp_earned: 90,
+      },
+      {
+        id: 'mp-19',
+        match_id: '33333333-3333-3333-3333-333333333336',
+        player_id: '00000000-0000-0000-0000-000000000007',
+        team: 'B',
+        player: profiles[6], // Sam Kowalski
+        rating_before: 2198,
+        rating_after: 2180,
+        xp_earned: 85,
+      },
+    ],
+  },
+  {
+    id: '33333333-3333-3333-3333-333333333337',
+    host_id: '00000000-0000-0000-0000-000000000006',
+    court_id: '11111111-1111-1111-1111-111111111111',
+    scheduled_at: new Date(Date.now() - 120 * 3600000).toISOString(),
+    game_type: 'singles',
+    min_rating: 3.5,
+    max_rating: 4.8,
+    status: 'completed',
+    team_a_score: 9,
+    team_b_score: 11,
+    scored_by_admin_id: '00000000-0000-0000-0000-000000000001',
+    winner_team: 'B',
+    completed_at: new Date(Date.now() - 119 * 3600000).toISOString(),
+    created_at: new Date(Date.now() - 121 * 3600000).toISOString(),
+    court: courts[0],
+    players: [
+      {
+        id: 'mp-20',
+        match_id: '33333333-3333-3333-3333-333333333337',
+        player_id: '00000000-0000-0000-0000-000000000002',
+        team: 'A',
+        player: profiles[1], // Taylor Vance
+        rating_before: 1653,
+        rating_after: 1638,
+        xp_earned: 70,
+      },
+      {
+        id: 'mp-21',
+        match_id: '33333333-3333-3333-3333-333333333337',
+        player_id: '00000000-0000-0000-0000-000000000006',
+        team: 'B',
+        player: profiles[5], // Maya Lin
+        rating_before: 1535,
+        rating_after: 1550,
+        xp_earned: 200,
+      },
+    ],
+  },
 ];
 
 // Bookings
@@ -400,12 +537,107 @@ export function createProfile(profile: Profile): Profile {
   return profile;
 }
 
+// Court Reviews Store (1 to 5 Stars & Management Feedback)
+let courtReviews: CourtReview[] = [
+  {
+    id: 'rev-01',
+    court_id: '11111111-1111-1111-1111-111111111111',
+    user_id: '00000000-0000-0000-0000-000000000004',
+    user_name: 'Elena Rostova',
+    user_avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&h=200&q=80',
+    user_role: 'Pickle Master (ELO 2,490)',
+    rating: 5,
+    comment: 'Exceptional tournament cushions! Night lighting gives zero glare and the management turned on Court 3 immediately upon our arrival. 10/10 venue.',
+    tags: ['Court Surface & Grip', 'Night Lighting', 'Management & Staff'],
+    created_at: new Date(Date.now() - 2 * 86400000).toISOString(),
+  },
+  {
+    id: 'rev-02',
+    court_id: '11111111-1111-1111-1111-111111111111',
+    user_id: '00000000-0000-0000-0000-000000000003',
+    user_name: 'Jordan Cruz',
+    user_avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80',
+    user_role: 'Platinum Athlete (ELO 1,940)',
+    rating: 5,
+    comment: 'The DUPR cameras are top-notch and court staff helped us verify net tension before our ladder match. Best facility in Tagum City!',
+    tags: ['Net Quality', 'Management & Staff'],
+    created_at: new Date(Date.now() - 5 * 86400000).toISOString(),
+  },
+  {
+    id: 'rev-03',
+    court_id: '22222222-2222-2222-2222-222222222222',
+    user_id: '00000000-0000-0000-0000-000000000006',
+    user_name: 'Maya Lin',
+    user_avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80',
+    user_role: 'Gold Player (ELO 1,550)',
+    rating: 4,
+    comment: 'Great outdoor atmosphere on Doña Regina Avenue. Very accommodating staff at the cafe. Courts are well maintained and clean.',
+    tags: ['Court Surface & Grip', 'Amenities'],
+    created_at: new Date(Date.now() - 3 * 86400000).toISOString(),
+  },
+  {
+    id: 'rev-04',
+    court_id: '33333333-3333-3333-3333-333333333330',
+    user_id: '00000000-0000-0000-0000-000000000005',
+    user_name: 'Devon Hayes',
+    user_avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&h=200&q=80',
+    user_role: 'Gold Player (ELO 1,802)',
+    rating: 5,
+    comment: 'Indoor coverage saved our tournament session during afternoon rain. Electronic scoreboards and locker rooms are very clean.',
+    tags: ['Cleanliness & Restrooms', 'Management & Staff'],
+    created_at: new Date(Date.now() - 4 * 86400000).toISOString(),
+  },
+  {
+    id: 'rev-05',
+    court_id: '44444444-4444-4444-4444-444444444444',
+    user_id: '00000000-0000-0000-0000-000000000007',
+    user_name: 'Sam Kowalski',
+    user_avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&h=200&q=80',
+    user_role: 'Diamond Player (ELO 2,180)',
+    rating: 4,
+    comment: 'Scenic palm setting in Purok Caimito with good natural breeze. Net tension is accurate and referee booth is convenient.',
+    tags: ['Net Quality', 'Amenities'],
+    created_at: new Date(Date.now() - 6 * 86400000).toISOString(),
+  },
+];
+
+export function getReviewsForCourt(courtId: string): CourtReview[] {
+  return courtReviews.filter((r) => r.court_id === courtId);
+}
+
+export function addCourtReview(review: CourtReview): CourtReview {
+  courtReviews.unshift(review);
+  return review;
+}
+
 export function getAllCourts(): Court[] {
-  return [...courts];
+  return courts.map((c) => {
+    const revs = courtReviews.filter((r) => r.court_id === c.id);
+    const avg = revs.length > 0
+      ? Number((revs.reduce((acc, r) => acc + r.rating, 0) / revs.length).toFixed(1))
+      : 4.8;
+    return {
+      ...c,
+      reviews_count: revs.length,
+      average_rating: avg,
+      reviews: revs,
+    };
+  });
 }
 
 export function getCourtById(id: string): Court | undefined {
-  return courts.find((c) => c.id === id);
+  const c = courts.find((court) => court.id === id);
+  if (!c) return undefined;
+  const revs = courtReviews.filter((r) => r.court_id === c.id);
+  const avg = revs.length > 0
+    ? Number((revs.reduce((acc, r) => acc + r.rating, 0) / revs.length).toFixed(1))
+    : 4.8;
+  return {
+    ...c,
+    reviews_count: revs.length,
+    average_rating: avg,
+    reviews: revs,
+  };
 }
 
 export function getAllMatches(): Match[] {

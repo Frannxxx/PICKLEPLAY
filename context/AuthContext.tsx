@@ -12,6 +12,7 @@ interface AuthContextType {
   logout: () => void;
   switchUser: (user: Profile) => void;
   refreshUser: () => Promise<void>;
+  updateUserProfile: (params: { full_name?: string; email?: string; phone?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,11 +21,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const setSafeUser = (u: Profile | null) => {
+    if (u && (u.full_name === 'Taylor Vance' || u.full_name === 'Frannnxx' || u.id === '00000000-0000-0000-0000-000000000002')) {
+      setUser({
+        ...u,
+        full_name: 'Frannnxx',
+        avatar_url: '/src/assets/images/frannnxx_avatar_1791277042121.jpg',
+      });
+    } else {
+      setUser(u);
+    }
+  };
+
   const refreshUser = async () => {
     try {
       const res = await api.auth.getMe();
       if (res.user) {
-        setUser(res.user);
+        setSafeUser(res.user);
       }
     } catch (err) {
       console.warn('Could not refresh session:', err);
@@ -52,7 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     try {
       const res = await api.auth.login(email, role);
-      setUser(res.user);
+      setSafeUser(res.user);
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     try {
       const res = await api.auth.register(params);
-      setUser(res.user);
+      setSafeUser(res.user);
     } finally {
       setIsLoading(false);
     }
@@ -80,7 +93,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const switchUser = (newUser: Profile) => {
     setAuthToken(`usr_${newUser.id}`);
-    setUser(newUser);
+    setSafeUser(newUser);
+  };
+
+  const updateUserProfile = async (params: { full_name?: string; email?: string; phone?: string }) => {
+    const res = await api.auth.updateProfile(params);
+    if (res.user) {
+      setSafeUser(res.user);
+    }
   };
 
   const role = user?.role || null;
@@ -98,6 +118,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logout,
         switchUser,
         refreshUser,
+        updateUserProfile,
       }}
     >
       {children}

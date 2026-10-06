@@ -1,6 +1,7 @@
 import {
   Profile,
   Court,
+  CourtReview,
   Match,
   EloAdjustmentResult,
   LeaderboardEntry,
@@ -84,6 +85,12 @@ export const api = {
     getMe: async () => {
       return request<{ success: boolean; user: Profile }>('/api/auth/me');
     },
+    updateProfile: async (params: { full_name?: string; email?: string; phone?: string }) => {
+      return request<{ success: boolean; user: Profile }>('/api/auth/profile', {
+        method: 'PATCH',
+        body: JSON.stringify(params),
+      });
+    },
     getDemoUsers: async () => {
       return request<{ success: boolean; data: Profile[] }>('/api/auth/demo-users');
     },
@@ -94,6 +101,23 @@ export const api = {
     },
     getCourtById: async (id: string) => {
       return request<{ success: boolean; data: Court & { availableSlots: any[] } }>(`/api/courts/${id}`);
+    },
+    addReview: async (courtId: string, params: {
+      rating: number;
+      comment: string;
+      tags?: string[];
+      user_name?: string;
+      user_avatar?: string;
+      user_role?: string;
+      user_id?: string;
+    }) => {
+      return request<{ success: boolean; review: CourtReview; court: Court }>(
+        `/api/courts/${courtId}/reviews`,
+        {
+          method: 'POST',
+          body: JSON.stringify(params),
+        }
+      );
     },
   },
   matches: {

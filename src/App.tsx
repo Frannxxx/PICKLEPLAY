@@ -11,6 +11,7 @@ import { TopBar, BottomTabBar } from './components/Navigation.tsx';
 import SchemaInspectorModal from './components/SchemaInspectorModal.tsx';
 import HostMatchModal from './components/HostMatchModal.tsx';
 import NotificationDrawer, { NotificationToast } from './components/NotificationDrawer.tsx';
+import SettingsModal from './components/SettingsModal.tsx';
 import { EloAdjustmentResult } from './types.ts';
 import { Plus } from 'lucide-react';
 
@@ -21,6 +22,7 @@ function AppContent() {
   const [isSchemaModalOpen, setIsSchemaModalOpen] = useState<boolean>(false);
   const [isHostMatchModalOpen, setIsHostMatchModalOpen] = useState<boolean>(false);
   const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] = useState<boolean>(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   const [lastEloResult, setLastEloResult] = useState<EloAdjustmentResult | null>(null);
 
   if (isLoading) {
@@ -86,6 +88,7 @@ function AppContent() {
         onSelectTab={setCurrentTab}
         onOpenSchemaModal={() => setIsSchemaModalOpen(true)}
         onOpenNotifications={() => setIsNotificationDrawerOpen(true)}
+        onOpenSettings={() => setIsSettingsModalOpen(true)}
       />
 
       {/* Main Spacious Content Container (No phone simulator frame) */}
@@ -117,6 +120,13 @@ function AppContent() {
         isOpen={isNotificationDrawerOpen}
         onClose={() => setIsNotificationDrawerOpen(false)}
         onNavigateTab={setCurrentTab}
+      />
+
+      {/* Settings & Preferences Modal */}
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        onOpenSchemaModal={() => setIsSchemaModalOpen(true)}
       />
 
       {/* Modals */}

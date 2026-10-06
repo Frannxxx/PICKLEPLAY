@@ -149,8 +149,13 @@ export default function DashboardScreen({ onNavigateTab, onOpenMatchModal }: Das
           <div className="flex items-center gap-3.5 cursor-pointer" onClick={() => onNavigateTab?.('profile')}>
             <div className="relative shrink-0">
               <img
-                src={user.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80'}
+                src={
+                  user.id === '00000000-0000-0000-0000-000000000002' || user.full_name === 'Frannnxx'
+                    ? '/src/assets/images/frannnxx_avatar_1791277042121.jpg'
+                    : user.avatar_url || '/src/assets/images/frannnxx_avatar_1791277042121.jpg'
+                }
                 alt={user.full_name}
+                referrerPolicy="no-referrer"
                 className="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-500/60 shadow-lg"
               />
               <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-slate-900">
@@ -161,7 +166,7 @@ export default function DashboardScreen({ onNavigateTab, onOpenMatchModal }: Das
             <div className="flex flex-col space-y-0.5">
               <div className="flex items-center gap-2 flex-wrap">
                 <h2 className="text-lg font-bold text-white tracking-tight hover:text-emerald-400 transition-colors leading-tight">
-                  {user.full_name}
+                  {user.full_name === 'Taylor Vance' ? 'Frannnxx' : user.full_name}
                 </h2>
                 {isCourtAdmin && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 uppercase tracking-wider">
@@ -171,8 +176,6 @@ export default function DashboardScreen({ onNavigateTab, onOpenMatchModal }: Das
               </div>
               <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
                 <span>{user.email}</span>
-                <span className="text-slate-600">·</span>
-                <span className="text-emerald-400 font-medium hover:underline">View Profile & Stats →</span>
               </div>
               <div className="flex items-center gap-1.5 text-[11px] text-slate-300 font-medium">
                 <MapPin className="w-3 h-3 text-emerald-400 shrink-0" />
@@ -195,33 +198,55 @@ export default function DashboardScreen({ onNavigateTab, onOpenMatchModal }: Das
 
         {/* ELO & XP METRICS */}
         <div className="relative z-10 grid grid-cols-3 gap-2 mt-5 pt-4 border-t border-slate-800/80">
-          <div className="bg-slate-950/70 backdrop-blur-sm rounded-xl p-2.5 border border-slate-800/60 text-center shadow-inner">
-            <span className="text-[10px] uppercase font-semibold text-slate-400 block mb-0.5">
+          <div className="bg-slate-950/70 backdrop-blur-sm rounded-xl px-2 py-2.5 border border-slate-800/60 text-center shadow-inner flex flex-col justify-between">
+            <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1 tracking-wider">
               ELO Points
             </span>
-            <span className="text-xl font-extrabold text-white font-['JetBrains_Mono'] tabular-nums">
+            <span className="text-lg sm:text-xl font-extrabold text-white font-['JetBrains_Mono'] tabular-nums my-0.5">
               {user.rank_points}
             </span>
+            <span className="text-[10px] text-emerald-400/90 block mt-1 font-mono font-medium">
+              Ladder Rating
+            </span>
           </div>
 
-          <div className="bg-slate-950/70 backdrop-blur-sm rounded-xl p-2.5 border border-slate-800/60 text-center shadow-inner">
-            <span className="text-[10px] uppercase font-semibold text-slate-400 block mb-0.5">
+          <div className="bg-slate-950/70 backdrop-blur-sm rounded-xl px-2 py-2.5 border border-slate-800/60 text-center shadow-inner flex flex-col justify-between">
+            <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1 tracking-wider">
               Record
             </span>
-            <span className="text-base font-bold text-emerald-400 font-['JetBrains_Mono'] tabular-nums">
-              {user.wins}W <span className="text-slate-500">-</span> <span className="text-slate-300">{user.losses}L</span>
-            </span>
-            <span className="text-[9px] text-slate-400 block mt-0.5 font-mono">
-              {winRate}% Win Rate
-            </span>
+            <div className="flex flex-col items-center justify-center gap-0.5 my-1">
+              <span className="inline-flex items-baseline gap-1">
+                <span className="text-base sm:text-lg font-black text-emerald-400 font-['JetBrains_Mono'] tabular-nums leading-none">
+                  {user.wins}
+                </span>
+                <span className="text-xs font-bold text-emerald-400/90 uppercase tracking-normal">
+                  W
+                </span>
+              </span>
+              <span className="inline-flex items-baseline gap-1">
+                <span className="text-base sm:text-lg font-black text-slate-300 font-['JetBrains_Mono'] tabular-nums leading-none">
+                  {user.losses}
+                </span>
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-normal">
+                  L
+                </span>
+              </span>
+            </div>
+            <div className="text-[10px] text-slate-400 block tracking-wide font-medium">
+              <span className="text-emerald-400 font-bold font-mono">{winRate}%</span>{' '}
+              <span className="text-slate-400">Win Rate</span>
+            </div>
           </div>
 
-          <div className="bg-slate-950/70 backdrop-blur-sm rounded-xl p-2.5 border border-slate-800/60 text-center shadow-inner">
-            <span className="text-[10px] uppercase font-semibold text-slate-400 block mb-0.5">
+          <div className="bg-slate-950/70 backdrop-blur-sm rounded-xl px-2 py-2.5 border border-slate-800/60 text-center shadow-inner flex flex-col justify-between">
+            <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1 tracking-wider">
               Total XP
             </span>
-            <span className="text-xl font-extrabold text-amber-400 font-['JetBrains_Mono'] tabular-nums">
+            <span className="text-lg sm:text-xl font-extrabold text-amber-400 font-['JetBrains_Mono'] tabular-nums my-0.5">
               {user.total_xp.toLocaleString()}
+            </span>
+            <span className="text-[10px] text-amber-400/90 block mt-1 font-mono font-medium">
+              Season XP
             </span>
           </div>
         </div>
@@ -338,7 +363,7 @@ export default function DashboardScreen({ onNavigateTab, onOpenMatchModal }: Das
             <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 mb-2 shadow">
               <Trophy className="w-4 h-4" />
             </div>
-            <h3 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Ladder Ranking</h3>
+            <h3 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Leaderboards</h3>
             <p className="text-xs text-slate-300 mt-0.5">Season 1 · Top Masters & ELO</p>
           </div>
           <ChevronRight className="relative z-10 w-4 h-4 text-slate-400 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-all" />

@@ -6,7 +6,6 @@ import {
   Trophy,
   Medal,
   Flame,
-  Search,
   Zap,
   TrendingUp,
   Award,
@@ -16,14 +15,12 @@ import {
 export default function LeaderboardScreen() {
   const { user } = useAuth();
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
-  const [tierFilter, setTierFilter] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchLeaderboard = async () => {
     setIsLoading(true);
     try {
-      const res = await api.leaderboard.getLeaderboard(tierFilter, searchQuery);
+      const res = await api.leaderboard.getLeaderboard('all');
       setEntries(res.data || []);
     } catch (err) {
       console.error('Failed to load leaderboard:', err);
@@ -34,17 +31,7 @@ export default function LeaderboardScreen() {
 
   useEffect(() => {
     fetchLeaderboard();
-  }, [tierFilter, searchQuery]);
-
-  const tiers: { label: string; value: string }[] = [
-    { label: 'All Tiers', value: 'all' },
-    { label: 'Pickle Master', value: 'Pickle Master' },
-    { label: 'Diamond', value: 'Diamond' },
-    { label: 'Platinum', value: 'Platinum' },
-    { label: 'Gold', value: 'Gold' },
-    { label: 'Silver', value: 'Silver' },
-    { label: 'Bronze', value: 'Bronze' },
-  ];
+  }, []);
 
   const getTierBadgeStyle = (tier: RankTier) => {
     switch (tier) {
@@ -79,57 +66,26 @@ export default function LeaderboardScreen() {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent" />
         </div>
 
-        <div className="relative z-10">
-          <div className="flex items-center justify-between mb-1.5">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow">
-                <Trophy className="w-4 h-4" />
-              </div>
-              <h1 className="text-xl font-black text-white tracking-tight font-['Cabinet_Grotesk']">
-                COMPETITIVE LADDER
-              </h1>
+        <div className="relative z-10 flex flex-col gap-2">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow">
+              <Trophy className="w-4 h-4" />
             </div>
-            <span className="text-xs text-amber-300 font-mono font-bold bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-full shadow">
+            <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight font-['Cabinet_Grotesk']">
+              LEADERBOARDS
+            </h1>
+          </div>
+          <div>
+            <span className="inline-flex items-center gap-1.5 text-xs text-amber-300 font-mono font-bold bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-full shadow">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
               Season 1 · Elo Rated
             </span>
           </div>
-          <p className="text-xs text-slate-300 max-w-md">
-            Official bias-free ranking ladder for Tagum City. Points, matches, and tiers verified exclusively by certified referees.
-          </p>
         </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search player name or DUPR ID..."
-          className="w-full h-10 pl-10 pr-4 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-emerald-500"
-        />
-      </div>
-
-      {/* Tier Filter Scroll Bar */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
-        {tiers.map((t) => (
-          <button
-            key={t.value}
-            onClick={() => setTierFilter(t.value)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-              tierFilter === t.value
-                ? 'bg-emerald-500 text-slate-950 shadow-sm'
-                : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-
       {/* TOP 3 PODIUM DISPLAY */}
-      {top3.length >= 3 && tierFilter === 'all' && !searchQuery && (
+      {top3.length >= 3 && (
         <div className="grid grid-cols-3 gap-2 pt-2 items-end">
           {/* #2 Rank */}
           <div className="rounded-2xl bg-slate-900/90 border border-slate-700/60 p-3 text-center relative flex flex-col items-center">

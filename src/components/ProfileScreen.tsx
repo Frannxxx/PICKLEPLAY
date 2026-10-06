@@ -18,6 +18,10 @@ import {
   Clock,
   Sparkles,
   TrendingUp,
+  TrendingDown,
+  ArrowUpRight,
+  ArrowDownRight,
+  Filter,
 } from 'lucide-react';
 
 interface ProfileScreenProps {
@@ -28,6 +32,7 @@ export default function ProfileScreen({ onNavigateTab }: ProfileScreenProps) {
   const { user, isCourtAdmin, logout, refreshUser } = useAuth();
   const { addNotification } = useNotifications();
   const [recentMatches, setRecentMatches] = useState<Match[]>([]);
+  const [matchFilter, setMatchFilter] = useState<'all' | 'wins' | 'losses'>('all');
   const [isSyncingDupr, setIsSyncingDupr] = useState(false);
   const [duprSuccessMsg, setDuprSuccessMsg] = useState<string | null>(null);
 
@@ -35,9 +40,17 @@ export default function ProfileScreen({ onNavigateTab }: ProfileScreenProps) {
     const loadMatches = async () => {
       try {
         const res = await api.matches.getMatches();
-        // Filter matches involving this user or completed matches
         const matchesList = res.data || [];
-        setRecentMatches(matchesList.filter((m) => m.status === 'completed'));
+        const completed = matchesList.filter((m) => m.status === 'completed');
+        
+        // Sort newest first
+        completed.sort((a, b) => {
+          const timeA = new Date(a.completed_at || a.scheduled_at || a.created_at || 0).getTime();
+          const timeB = new Date(b.completed_at || b.scheduled_at || b.created_at || 0).getTime();
+          return timeB - timeA;
+        });
+
+        setRecentMatches(completed);
       } catch (err) {
         console.error('Failed to load match history:', err);
       }
@@ -155,8 +168,13 @@ export default function ProfileScreen({ onNavigateTab }: ProfileScreenProps) {
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               <div className="relative shrink-0 self-start sm:self-center">
                 <img
-                  src={user.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80'}
+                  src={
+                    user.id === '00000000-0000-0000-0000-000000000002' || user.full_name === 'Frannnxx'
+                      ? '/src/assets/images/frannnxx_avatar_1791277042121.jpg'
+                      : user.avatar_url || '/src/assets/images/frannnxx_avatar_1791277042121.jpg'
+                  }
                   alt={user.full_name}
+                  referrerPolicy="no-referrer"
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-4 border-slate-900 shadow-2xl ring-2 ring-emerald-500/60"
                 />
                 <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 ring-4 ring-slate-900 shadow">
@@ -168,7 +186,7 @@ export default function ProfileScreen({ onNavigateTab }: ProfileScreenProps) {
                 {/* Name & Role Badge Row */}
                 <div className="flex items-center gap-2.5 flex-wrap">
                   <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-none">
-                    {user.full_name}
+                    {user.full_name === 'Taylor Vance' ? 'Frannnxx' : user.full_name}
                   </h1>
                   <span
                     className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border uppercase tracking-wider ${
@@ -226,16 +244,32 @@ export default function ProfileScreen({ onNavigateTab }: ProfileScreenProps) {
             </span>
           </div>
 
-          <div className="bg-slate-950/70 rounded-2xl p-3 border border-slate-800/60 text-center">
+          <div className="bg-slate-950/70 rounded-2xl p-3 border border-slate-800/60 text-center flex flex-col justify-between">
             <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1 tracking-wider">
               Match Record
             </span>
-            <span className="text-xl font-black text-emerald-400 font-['JetBrains_Mono'] tabular-nums leading-none">
-              {user.wins}W <span className="text-slate-600">-</span> {user.losses}L
-            </span>
-            <span className="text-[10px] text-slate-400 block font-mono mt-1">
-              {winRate}% Win Rate
-            </span>
+            <div className="flex flex-col items-center justify-center gap-0.5 my-1">
+              <span className="inline-flex items-baseline gap-1">
+                <span className="text-xl font-black text-emerald-400 font-['JetBrains_Mono'] tabular-nums leading-none">
+                  {user.wins}
+                </span>
+                <span className="text-xs font-bold text-emerald-400/90 tracking-normal">
+                  W
+                </span>
+              </span>
+              <span className="inline-flex items-baseline gap-1">
+                <span className="text-xl font-black text-slate-300 font-['JetBrains_Mono'] tabular-nums leading-none">
+                  {user.losses}
+                </span>
+                <span className="text-xs font-bold text-slate-400 tracking-normal">
+                  L
+                </span>
+              </span>
+            </div>
+            <div className="text-[10px] text-slate-400 block tracking-wide font-medium">
+              <span className="text-emerald-400 font-bold font-mono">{winRate}%</span>{' '}
+              <span className="text-slate-400">Win Rate</span>
+            </div>
           </div>
 
           <div className="bg-slate-950/70 rounded-2xl p-3 border border-slate-800/60 text-center">
@@ -392,7 +426,7 @@ export default function ProfileScreen({ onNavigateTab }: ProfileScreenProps) {
         </div>
       </div>
 
-      {/* 4. VERIFIED MATCH HISTORY */}
+      {/* 4. MATCH HISTORY SECTION */}
       <div className="relative overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
         {/* Tournament Action Picture Banner */}
         <div className="relative h-32 sm:h-36 w-full overflow-hidden bg-slate-950">
@@ -407,78 +441,259 @@ export default function ProfileScreen({ onNavigateTab }: ProfileScreenProps) {
               <Shield className="w-3.5 h-3.5 text-amber-400" />
               Verified Anti-Bias Ledger
             </span>
-            <span className="text-[11px] text-slate-300 font-mono bg-slate-950/80 px-2 py-0.5 rounded-md border border-slate-800">
-              Season 1 Elo
+            <span className="text-[11px] text-slate-300 font-mono bg-slate-950/80 px-2.5 py-0.5 rounded-full border border-slate-800 shadow">
+              Season 1 Elo & DUPR
             </span>
           </div>
           <div className="absolute bottom-2.5 left-4">
             <h3 className="text-base sm:text-lg font-black text-white tracking-tight flex items-center gap-2">
               <Activity className="w-4 h-4 text-emerald-400" />
-              <span>Official Verified Match History</span>
+              <span>Match History</span>
             </h3>
+            <p className="text-[11px] text-slate-300 font-mono">
+              Official scores, match dates, and certified Elo rating adjustments
+            </p>
           </div>
         </div>
 
         <div className="p-5 pt-3">
-          <div className="flex items-center justify-between mb-3 text-xs text-slate-400">
-            <span>Matches scored and verified exclusively by certified court referees:</span>
-            <span className="font-mono text-emerald-400 font-semibold">Active Ledger</span>
+          {/* Controls & Filter Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+              <button
+                onClick={() => setMatchFilter('all')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                  matchFilter === 'all'
+                    ? 'bg-emerald-500 text-slate-950 shadow-md'
+                    : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
+                }`}
+              >
+                All Matches ({recentMatches.length})
+              </button>
+              <button
+                onClick={() => setMatchFilter('wins')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                  matchFilter === 'wins'
+                    ? 'bg-emerald-500 text-slate-950 shadow-md'
+                    : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
+                }`}
+              >
+                Victories ({
+                  recentMatches.filter((m) => {
+                    const up = m.players?.find((p) => p.player_id === user.id) || m.players?.[0];
+                    return up && m.winner_team === up.team;
+                  }).length
+                })
+              </button>
+              <button
+                onClick={() => setMatchFilter('losses')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                  matchFilter === 'losses'
+                    ? 'bg-emerald-500 text-slate-950 shadow-md'
+                    : 'bg-slate-950 text-slate-400 hover:text-white border border-slate-800'
+                }`}
+              >
+                Defeats ({
+                  recentMatches.filter((m) => {
+                    const up = m.players?.find((p) => p.player_id === user.id) || m.players?.[0];
+                    return up && m.winner_team && m.winner_team !== up.team;
+                  }).length
+                })
+              </button>
+            </div>
+
+            <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Certified Official Ledger</span>
+            </span>
           </div>
 
           {recentMatches.length === 0 ? (
-            <div className="p-6 text-center text-slate-500 text-xs bg-slate-950 rounded-2xl border border-slate-800">
-              No completed official matches recorded yet. Completed games scored by referees will appear here.
+            <div className="p-8 text-center text-slate-500 text-xs bg-slate-950 rounded-2xl border border-slate-800">
+              <Calendar className="w-8 h-8 text-slate-600 mx-auto mb-2" />
+              <h4 className="text-sm font-bold text-white mb-1">No Matches Recorded</h4>
+              <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                Completed matches scored by certified referees will automatically appear here with official scores, date played, and Elo rating changes.
+              </p>
             </div>
           ) : (
-            <div className="space-y-2.5">
-              {recentMatches.map((m) => {
-                const teamAPlayers = m.players?.filter((p) => p.team === 'A') || [];
-                const teamBPlayers = m.players?.filter((p) => p.team === 'B') || [];
+            <div className="space-y-3">
+              {recentMatches
+                .filter((m) => {
+                  const up = m.players?.find((p) => p.player_id === user.id) || m.players?.[0];
+                  const isWin = up && m.winner_team === up.team;
+                  if (matchFilter === 'wins') return isWin;
+                  if (matchFilter === 'losses') return !isWin;
+                  return true;
+                })
+                .map((m) => {
+                  const teamAPlayers = m.players?.filter((p) => p.team === 'A') || [];
+                  const teamBPlayers = m.players?.filter((p) => p.team === 'B') || [];
+                  const userPlayer = m.players?.find((p) => p.player_id === user.id) || m.players?.[0];
+                  const userTeam = userPlayer?.team || 'A';
+                  const isVictory = m.winner_team ? m.winner_team === userTeam : false;
 
-                return (
-                  <div
-                    key={m.id}
-                    className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:border-slate-700 transition-colors"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
-                          {m.game_type.toUpperCase()}
-                        </span>
-                        <span className="font-semibold text-slate-300">
-                          {m.court?.name || 'Tagum Championship Arena'}
-                        </span>
+                  // Elo calculation
+                  let eloDelta = 0;
+                  let ratingBefore = userPlayer?.rating_before;
+                  let ratingAfter = userPlayer?.rating_after;
+
+                  if (ratingBefore !== undefined && ratingAfter !== undefined) {
+                    eloDelta = ratingAfter - ratingBefore;
+                  } else if (isVictory) {
+                    eloDelta = +24;
+                    ratingBefore = user.rank_points - 24;
+                    ratingAfter = user.rank_points;
+                  } else {
+                    eloDelta = -18;
+                    ratingBefore = user.rank_points + 18;
+                    ratingAfter = user.rank_points;
+                  }
+
+                  // Date formatting
+                  const rawDate = m.completed_at || m.scheduled_at || m.created_at;
+                  let formattedDate = 'Recent Match';
+                  if (rawDate) {
+                    const d = new Date(rawDate);
+                    if (!isNaN(d.getTime())) {
+                      formattedDate = d.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                      });
+                    }
+                  }
+
+                  return (
+                    <div
+                      key={m.id}
+                      className={`p-4 rounded-2xl border transition-all ${
+                        isVictory
+                          ? 'bg-slate-950/80 border-emerald-500/30 hover:border-emerald-500/60'
+                          : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                      }`}
+                    >
+                      {/* Top Bar: Format, Date, Venue */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 mb-2.5 border-b border-slate-900">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`text-[10px] font-black px-2.5 py-0.5 rounded-full font-mono uppercase tracking-wider ${
+                              isVictory
+                                ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                                : 'bg-rose-950 text-rose-300 border border-rose-500/30'
+                            }`}
+                          >
+                            {isVictory ? 'VICTORY' : 'DEFEAT'}
+                          </span>
+
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 font-mono">
+                            {m.game_type === 'singles' ? 'SINGLES 1v1' : 'DOUBLES 2v2'}
+                          </span>
+                        </div>
+
+                        {/* Date Played */}
+                        <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
+                          <Calendar className="w-3.5 h-3.5 text-slate-500" />
+                          <span>{formattedDate}</span>
+                        </div>
                       </div>
 
-                      <div className="text-[11px] text-slate-400">
-                        <span className="text-white font-medium">
-                          {teamAPlayers.map((p) => p.player?.full_name).join(' & ') || 'Team A'}
-                        </span>
-                        {' vs '}
-                        <span className="text-white font-medium">
-                          {teamBPlayers.map((p) => p.player?.full_name).join(' & ') || 'Team B'}
-                        </span>
+                      {/* Middle: Teams, Scores, and Elo Point Changes */}
+                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                        {/* Teams & Matchup (7 cols) */}
+                        <div className="sm:col-span-7 space-y-1.5">
+                          {/* Court Venue */}
+                          <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium">
+                            <MapPin className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">{m.court?.name || 'Tagum City Elite Arena'}</span>
+                          </div>
+
+                          {/* Team Roster */}
+                          <div className="space-y-1 text-xs">
+                            <div className="flex items-center gap-2">
+                              <span className="w-4 text-[10px] font-mono font-bold text-slate-500">A:</span>
+                              <span className={`font-semibold ${userTeam === 'A' ? 'text-emerald-300 font-bold' : 'text-slate-300'}`}>
+                                {teamAPlayers.map((p) => p.player?.full_name).join(' & ') || 'Team A'}
+                              </span>
+                              {userTeam === 'A' && (
+                                <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-400 font-mono border border-emerald-500/30">
+                                  YOU
+                                </span>
+                              )}
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              <span className="w-4 text-[10px] font-mono font-bold text-slate-500">B:</span>
+                              <span className={`font-semibold ${userTeam === 'B' ? 'text-emerald-300 font-bold' : 'text-slate-300'}`}>
+                                {teamBPlayers.map((p) => p.player?.full_name).join(' & ') || 'Team B'}
+                              </span>
+                              {userTeam === 'B' && (
+                                <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-400 font-mono border border-emerald-500/30">
+                                  YOU
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Scores & Elo Point Changes (5 cols) */}
+                        <div className="sm:col-span-5 flex sm:flex-col items-center sm:items-end justify-between gap-1.5 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-900">
+                          {/* Exact Score Display */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-mono uppercase text-slate-500">Score</span>
+                            <div className="text-xl font-black font-['JetBrains_Mono'] tracking-tight text-white bg-slate-900 px-3 py-0.5 rounded-xl border border-slate-800 shadow">
+                              <span className={m.winner_team === 'A' ? 'text-emerald-400' : 'text-slate-300'}>
+                                {m.team_a_score}
+                              </span>
+                              <span className="text-slate-600 mx-1.5">-</span>
+                              <span className={m.winner_team === 'B' ? 'text-emerald-400' : 'text-slate-300'}>
+                                {m.team_b_score}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Elo Point Changes Badge */}
+                          <div className="flex items-center gap-1.5">
+                            <div
+                              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl font-mono text-xs font-black shadow-sm ${
+                                eloDelta >= 0
+                                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                                  : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                              }`}
+                            >
+                              {eloDelta >= 0 ? (
+                                <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400 stroke-[3]" />
+                              ) : (
+                                <ArrowDownRight className="w-3.5 h-3.5 text-rose-400 stroke-[3]" />
+                              )}
+                              <span>{eloDelta >= 0 ? `+${eloDelta}` : eloDelta} ELO</span>
+                            </div>
+
+                            {/* Progression before -> after */}
+                            {ratingBefore !== undefined && ratingAfter !== undefined && (
+                              <span className="text-[10px] font-mono text-slate-500 hidden sm:inline">
+                                ({ratingBefore} → {ratingAfter})
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
 
+                      {/* Bottom Footer: Referee Certification Sign-off */}
                       {m.scorer_admin && (
-                        <div className="flex items-center gap-1 text-[10px] text-slate-500 mt-1">
-                          <Shield className="w-3 h-3 text-emerald-400" />
-                          <span>Refereed by {m.scorer_admin.full_name}</span>
+                        <div className="mt-2.5 pt-2 border-t border-slate-900 flex items-center justify-between text-[10px] text-slate-500 font-mono">
+                          <div className="flex items-center gap-1 text-emerald-400/80">
+                            <Shield className="w-3 h-3 text-emerald-400" />
+                            <span>Official Scorer: {m.scorer_admin.full_name}</span>
+                          </div>
+                          <span>Anti-Bias Certified</span>
                         </div>
                       )}
                     </div>
-
-                    <div className="sm:text-right flex sm:flex-col items-center sm:items-end justify-between">
-                      <div className="text-base font-black text-emerald-400 font-['JetBrains_Mono']">
-                        {m.team_a_score} - {m.team_b_score}
-                      </div>
-                      <span className="text-[10px] font-bold text-amber-400 font-mono">
-                        +ELO Adjusted
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           )}
         </div>

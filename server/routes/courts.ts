@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { authenticateUser, requireCourtAdmin } from '../middleware/auth.ts';
-import { getAllCourts, getCourtById } from '../store.ts';
-import { Court } from '../../src/types.ts';
+import { getAllCourts, getCourtById, addCourtReview } from '../store.ts';
+import { Court, CourtReview } from '../../src/types.ts';
 
 const router = Router();
 
@@ -42,6 +42,45 @@ router.get('/:id', (req: Request, res: Response) => {
     ];
 
     return res.json({ success: true, data: { ...court, availableSlots } });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * POST /api/courts/:id/reviews
+ * Allows players to submit 1 to 5 star rating and comment for court or management
+ */
+router.post('/:id/reviews', (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { rating, comment, tags, user_name, user_avatar, user_role, user_id } = req.body;
+
+    const court = getCourtById(id);
+    if (!court) {
+      return res.status(404).json({ error: 'Court not found' });
+    }
+
+    const numRating = Math.max(1, Math.min(5, Number(rating) || 5));
+    if (!comment || typeof comment !== 'string' || !comment.trim()) {
+      return res.status(400).json({ error: 'Comment feedback is required' });
+    }
+
+    const newReview = addCourtReview({
+      id: `rev-${Date.now()}`,
+      court_id: id,
+      user_id: user_id || '00000000-0000-0000-0000-000000000002',
+      user_name: user_name || 'Verified Tagum Athlete',
+      user_avatar: user_avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80',
+      user_role: user_role || 'Verified Player',
+      rating: numRating,
+      comment: comment.trim(),
+      tags: Array.isArray(tags) && tags.length > 0 ? tags : ['Court Surface & Grip', 'Management & Staff'],
+      created_at: new Date().toISOString(),
+    });
+
+    const updatedCourt = getCourtById(id);
+    return res.status(201).json({ success: true, review: newReview, court: updatedCourt });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }

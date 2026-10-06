@@ -6,6 +6,7 @@ export interface Profile {
   id: string;
   full_name: string;
   email: string;
+  phone?: string;
   role: UserRole;
   rank_points: number;
   rank_tier: RankTier;
@@ -19,6 +20,19 @@ export interface Profile {
   updated_at?: string;
 }
 
+export interface CourtReview {
+  id: string;
+  court_id: string;
+  user_id: string;
+  user_name: string;
+  user_avatar?: string;
+  user_role?: string;
+  rating: number; // 1 to 5
+  comment: string;
+  tags?: string[];
+  created_at: string;
+}
+
 export interface Court {
   id: string;
   name: string;
@@ -30,6 +44,9 @@ export interface Court {
   surface_type: string;
   amenities: string[];
   image_url: string;
+  average_rating?: number;
+  reviews_count?: number;
+  reviews?: CourtReview[];
   created_at?: string;
 }
 
