@@ -4,10 +4,10 @@ export interface AppNotification {
   id: string;
   title: string;
   message: string;
-  type: 'match' | 'dupr' | 'court' | 'league' | 'referee';
+  type: 'match' | 'dupr' | 'court' | 'league' | 'referee' | 'tournament';
   read: boolean;
   timestamp: string;
-  targetTab?: 'dashboard' | 'leaderboard' | 'courts' | 'scorekeeper' | 'profile';
+  targetTab?: 'dashboard' | 'leaderboard' | 'courts' | 'scorekeeper' | 'profile' | 'tournaments';
   actionLabel?: string;
   badge?: string;
 }
@@ -22,8 +22,8 @@ interface NotificationContextType {
   addNotification: (notif: {
     title: string;
     message: string;
-    type: 'match' | 'dupr' | 'court' | 'league' | 'referee';
-    targetTab?: 'dashboard' | 'leaderboard' | 'courts' | 'scorekeeper' | 'profile';
+    type: 'match' | 'dupr' | 'court' | 'league' | 'referee' | 'tournament';
+    targetTab?: 'dashboard' | 'leaderboard' | 'courts' | 'scorekeeper' | 'profile' | 'tournaments';
     actionLabel?: string;
     badge?: string;
   }) => void;
@@ -151,8 +151,8 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const addNotification = (notif: {
     title: string;
     message: string;
-    type: 'match' | 'dupr' | 'court' | 'league' | 'referee';
-    targetTab?: 'dashboard' | 'leaderboard' | 'courts' | 'scorekeeper' | 'profile';
+    type: 'match' | 'dupr' | 'court' | 'league' | 'referee' | 'tournament';
+    targetTab?: 'dashboard' | 'leaderboard' | 'courts' | 'scorekeeper' | 'profile' | 'tournaments';
     actionLabel?: string;
     badge?: string;
   }) => {

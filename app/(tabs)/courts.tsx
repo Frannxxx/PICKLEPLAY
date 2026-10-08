@@ -299,9 +299,6 @@ export default function CourtsScreen() {
                     <span className="text-xs font-black text-white font-mono">
                       {avgRating.toFixed(1)}
                     </span>
-                    <span className="text-[10px] text-slate-400 font-mono">
-                      ({reviewsCount})
-                    </span>
                   </div>
                 </div>
 
@@ -330,7 +327,7 @@ export default function CourtsScreen() {
                     className="flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 transition-all active:scale-95 shadow-sm"
                   >
                     <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                    <span>Rate Court & Management</span>
+                    <span>Rate</span>
                   </button>
 
                   <button
@@ -342,7 +339,7 @@ export default function CourtsScreen() {
                   >
                     <MessageSquare className="w-3.5 h-3.5 text-slate-500" />
                     <span>
-                      {isExpanded ? 'Hide Comments' : `Comments (${court.reviews?.length || 0})`}
+                      {isExpanded ? 'Hide Comments' : 'Comments'}
                     </span>
                     {isExpanded ? (
                       <ChevronUp className="w-3.5 h-3.5 text-slate-400" />
@@ -358,10 +355,7 @@ export default function CourtsScreen() {
                     <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-800">
                       <div className="flex items-center gap-1.5 font-bold text-white">
                         <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                        <span>{avgRating.toFixed(1)} Venue & Staff Rating</span>
-                        <span className="text-slate-500 font-mono text-[11px]">
-                          ({reviewsCount} reviews)
-                        </span>
+                        <span>{avgRating.toFixed(1)} Venue Rating</span>
                       </div>
 
                       <button
@@ -445,10 +439,10 @@ export default function CourtsScreen() {
                 {/* Reserve Court Action Button */}
                 <button
                   onClick={() => handleOpenBooking(court)}
-                  className="w-full h-11 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all"
+                  className="w-full h-11 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all"
                 >
                   <Calendar className="w-4 h-4" />
-                  <span>Reserve Court & Pay with Stripe</span>
+                  <span>RESERVER COURT</span>
                 </button>
               </div>
             </div>
@@ -473,7 +467,7 @@ export default function CourtsScreen() {
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-white uppercase tracking-wider font-['Cabinet_Grotesk'] leading-none">
-                    Rate Court & Management
+                    Rate Court
                   </h3>
                   <p className="text-[11px] text-slate-400 truncate max-w-[220px] mt-0.5">
                     {courtToRate.name}

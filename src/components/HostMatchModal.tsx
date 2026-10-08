@@ -11,7 +11,7 @@ interface HostMatchModalProps {
 }
 
 export default function HostMatchModal({ isOpen, onClose, onMatchCreated }: HostMatchModalProps) {
-  const { user } = useAuth();
+  const { user, isCourtAdmin, switchUser } = useAuth();
   const [courts, setCourts] = useState<Court[]>([]);
   const [selectedCourtId, setSelectedCourtId] = useState<string>('');
   const [gameType, setGameType] = useState<'singles' | 'doubles'>('doubles');
@@ -30,6 +30,63 @@ export default function HostMatchModal({ isOpen, onClose, onMatchCreated }: Host
   }, [isOpen]);
 
   if (!isOpen || !user) return null;
+
+  const handleSwitchToPlayer = () => {
+    switchUser({
+      id: '00000000-0000-0000-0000-000000000002',
+      full_name: 'Frannnxx',
+      email: 'franx000002@gmail.com',
+      role: 'player',
+      rank_points: 1680,
+      rank_tier: 'Gold',
+      total_xp: 4250,
+      wins: 42,
+      losses: 19,
+      dupr_id: 'DUPR-54812',
+      skill_rating: 4.15,
+      avatar_url: '/src/assets/images/frannnxx_avatar_1791277042121.jpg',
+    });
+    onClose();
+  };
+
+  if (isCourtAdmin) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden p-6 text-center">
+          <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center mx-auto mb-3">
+            <Trophy className="w-7 h-7" />
+          </div>
+          <h2 className="text-base font-black text-white uppercase tracking-tight mb-2">
+            Referee Neutrality Notice
+          </h2>
+          <p className="text-xs text-slate-300 leading-relaxed mb-4">
+            Certified court referees manage facilities and score games only. Referees cannot play or host competitive matches on a referee account.
+          </p>
+          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-emerald-400 font-mono mb-5 text-left space-y-1">
+            <p className="font-bold text-white">To play in matches:</p>
+            <p className="text-slate-400">
+              You need to register or switch to a verified Player account to earn ELO and ladder standings.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <button
+              onClick={handleSwitchToPlayer}
+              className="w-full h-11 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all"
+            >
+              <Trophy className="w-4 h-4" />
+              <span>Switch to Player (Frannnxx) to Play</span>
+            </button>
+            <button
+              onClick={onClose}
+              className="w-full h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

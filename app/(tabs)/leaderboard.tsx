@@ -59,8 +59,9 @@ export default function LeaderboardScreen() {
       <div className="relative overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 shadow-xl p-5">
         <div className="absolute inset-0 z-0 opacity-25 pointer-events-none">
           <img
-            src="/src/assets/images/pickleball_ladder_trophy_1790516003619.jpg"
+            src="/src/assets/images/tagum_championship_trophy_1791477380864.jpg"
             alt="Season 1 Tournament Trophy"
+            referrerPolicy="no-referrer"
             className="w-full h-full object-cover object-right"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent" />

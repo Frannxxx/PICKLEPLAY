@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { authenticateUser, requireCourtAdmin } from '../middleware/auth.ts';
-import { getAllCourts, getCourtById, addCourtReview } from '../store.ts';
+import { getAllCourts, getCourtById, addCourtReview, getCourtActivityToday, updateCourtActivity } from '../store.ts';
 import { Court, CourtReview } from '../../src/types.ts';
 
 const router = Router();
@@ -13,6 +13,39 @@ router.get('/', (req: Request, res: Response) => {
   try {
     const courts = getAllCourts();
     return res.json({ success: true, count: courts.length, data: courts });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * GET /api/courts/activity/today
+ * Real-time court status, live games in progress, and count of players active today
+ */
+router.get('/activity/today', (req: Request, res: Response) => {
+  try {
+    const activity = getCourtActivityToday();
+    return res.json({ success: true, data: activity });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * POST /api/courts/activity/update
+ * Allows court officials and admins to post real-time court status announcements and log walk-in players
+ */
+router.post('/activity/update', authenticateUser, (req: Request, res: Response) => {
+  try {
+    const { message, courtId, addedPlayers, statusText } = req.body;
+    const updated = updateCourtActivity({
+      message,
+      courtId,
+      addedPlayers: Number(addedPlayers) || 0,
+      statusText,
+      postedBy: req.user?.full_name || 'Court Official',
+    });
+    return res.json({ success: true, data: updated });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }

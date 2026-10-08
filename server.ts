@@ -12,6 +12,7 @@ import scoresRoutes from './server/routes/scores.ts';
 import leaderboardRoutes from './server/routes/leaderboard.ts';
 import paymentsRoutes from './server/routes/payments.ts';
 import duprRoutes from './server/routes/dupr.ts';
+import tournamentsRoutes from './server/routes/tournaments.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,6 +39,7 @@ app.use('/api/scores', scoresRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/payments', paymentsRoutes);
 app.use('/api/dupr', duprRoutes);
+app.use('/api/tournaments', tournamentsRoutes);
 
 // Health Check
 app.get('/api/health', (req: Request, res: Response) => {

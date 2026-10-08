@@ -47,6 +47,11 @@ router.get('/:id', (req: Request, res: Response) => {
 router.post('/', authenticateUser, (req: Request, res: Response) => {
   try {
     const user = req.user!;
+    if (user.role === 'court_admin') {
+      return res.status(403).json({
+        error: 'Official Referee Neutrality: Referees focus strictly on court scoring and facility management. To host and play competitive matches, please register as a Player.'
+      });
+    }
     const { courtId, gameType = 'doubles', minRating = 3.0, maxRating = 4.5, scheduledAt } = req.body;
 
     if (!courtId) {
@@ -98,6 +103,11 @@ router.post('/', authenticateUser, (req: Request, res: Response) => {
 router.post('/:id/join', authenticateUser, (req: Request, res: Response) => {
   try {
     const user = req.user!;
+    if (user.role === 'court_admin') {
+      return res.status(403).json({
+        error: 'Official Referee Neutrality: Referees cannot play in matches. Only registered players can join competitive rosters. Please register as a Player.'
+      });
+    }
     const match = getMatchById(req.params.id);
 
     if (!match) {

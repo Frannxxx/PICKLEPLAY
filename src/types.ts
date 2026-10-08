@@ -135,3 +135,64 @@ export interface LeaderboardEntry extends Profile {
   total_matches: number;
   recent_form: ('W' | 'L')[];
 }
+
+export interface TournamentPlayer {
+  id: string;
+  player_id: string;
+  seed: number;
+  full_name: string;
+  avatar_url?: string;
+  skill_rating: number;
+  rank_tier: RankTier;
+  dupr_id?: string;
+  registered_at: string;
+}
+
+export interface BracketMatch {
+  id: string;
+  round_index: number;
+  round_name: string;
+  match_number: number;
+  next_match_id?: string | null;
+  next_slot?: 'player1' | 'player2' | null;
+  player1?: TournamentPlayer | null;
+  player2?: TournamentPlayer | null;
+  score1?: number | null;
+  score2?: number | null;
+  winner_id?: string | null;
+  status: 'pending' | 'in_progress' | 'completed';
+  court_name?: string;
+  scheduled_time?: string;
+}
+
+export interface TournamentRound {
+  round_index: number;
+  round_name: string;
+  matches: BracketMatch[];
+}
+
+export interface Tournament {
+  id: string;
+  title: string;
+  description: string;
+  category: 'Men\'s Singles' | 'Women\'s Singles' | 'Open Doubles' | 'Mixed Doubles';
+  skill_level: string;
+  format: 'Single Elimination (8 Players)' | 'Single Elimination (16 Players)';
+  max_participants: number;
+  venue_name: string;
+  venue_address?: string;
+  court_id?: string;
+  start_date: string;
+  end_date: string;
+  registration_deadline: string;
+  entry_fee: number;
+  prize_pool: number;
+  banner_image_url?: string;
+  status: 'registration_open' | 'active' | 'completed' | 'cancelled';
+  created_by_admin_id: string;
+  created_at: string;
+  participants: TournamentPlayer[];
+  rounds: TournamentRound[];
+  champion?: TournamentPlayer | null;
+  runner_up?: TournamentPlayer | null;
+}

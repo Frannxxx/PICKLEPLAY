@@ -16,6 +16,9 @@ import {
   AlertCircle,
   RefreshCw,
   MapPin,
+  User,
+  Calendar,
+  Activity,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -186,21 +189,24 @@ export default function ScorekeeperScreen({ onScoreSubmitted }: ScorekeeperScree
   return (
     <div className="flex flex-col space-y-4 pb-20 px-4 pt-3 max-w-2xl mx-auto w-full">
       {/* Admin Authority Banner */}
-      <div className="flex items-center justify-between p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/40">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5 text-emerald-400" />
+      <div className="flex items-center justify-between p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 shadow-md">
+        <div className="flex items-center gap-2.5">
+          <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
           <div>
-            <h1 className="text-xs font-bold text-white uppercase tracking-wider">
-              Referee Scorekeeping Console
+            <h1 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <span>Referee Scorekeeper Console</span>
+              <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-mono">
+                REF-99214
+              </span>
             </h1>
             <p className="text-[11px] text-emerald-300">
-              Logged in as Official Referee: <span className="font-bold">{user?.full_name}</span>
+              Official Court Scorer & Venue Manager: <span className="font-bold">{user?.full_name}</span>
             </p>
           </div>
         </div>
         <button
           onClick={fetchMatches}
-          className="p-1.5 rounded-lg bg-emerald-900/40 hover:bg-emerald-800/60 text-emerald-300 text-xs flex items-center gap-1"
+          className="p-1.5 px-2.5 rounded-xl bg-emerald-900/40 hover:bg-emerald-800/60 text-emerald-300 text-xs flex items-center gap-1 font-semibold"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           <span>Refresh</span>
@@ -470,6 +476,62 @@ export default function ScorekeeperScreen({ onScoreSubmitted }: ScorekeeperScree
           </p>
         </div>
       )}
+      {/* 3. FACILITY COURT MANAGEMENT & MONITORING (REFEREE ONLY) */}
+      <div className="rounded-3xl bg-slate-900 border border-slate-800 p-5 shadow-xl space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+              <MapPin className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider">
+                Court Facility Live Management
+              </h2>
+              <p className="text-[11px] text-slate-400">
+                Official court supervision across Tagum City centers
+              </p>
+            </div>
+          </div>
+          <span className="text-[10px] bg-emerald-500/20 text-emerald-400 font-mono px-2 py-0.5 rounded border border-emerald-500/30 font-bold">
+            3 Facilities Active
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-bold text-xs text-white">City Pickle Grounds</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <p className="text-[11px] text-slate-400 mb-2">4 Courts · 24/7 Night Lights</p>
+            <div className="text-[10px] text-emerald-400 font-mono bg-emerald-950/40 px-2 py-1 rounded border border-emerald-500/30">
+              Status: Referees on Duty
+            </div>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-bold text-xs text-white">M Central Club</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <p className="text-[11px] text-slate-400 mb-2">4 Courts · Open to 2 AM</p>
+            <div className="text-[10px] text-amber-400 font-mono bg-amber-950/40 px-2 py-1 rounded border border-amber-500/30">
+              Status: Live Scorer Active
+            </div>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-bold text-xs text-white">Championship Arena</span>
+              <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+            </div>
+            <p className="text-[11px] text-slate-400 mb-2">6 Courts · Sanctioned</p>
+            <div className="text-[10px] text-blue-400 font-mono bg-blue-950/40 px-2 py-1 rounded border border-blue-500/30">
+              Status: Tournament Ready
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

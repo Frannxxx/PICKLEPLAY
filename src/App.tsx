@@ -5,6 +5,7 @@ import AuthPortal from './components/AuthPortal.tsx';
 import DashboardScreen from '../app/(tabs)/index.tsx';
 import LeaderboardScreen from '../app/(tabs)/leaderboard.tsx';
 import CourtsScreen from '../app/(tabs)/courts.tsx';
+import TournamentsScreen from '../app/(tabs)/tournaments.tsx';
 import ScorekeeperScreen from '../app/(tabs)/scorekeeper.tsx';
 import ProfileScreen from './components/ProfileScreen.tsx';
 import { TopBar, BottomTabBar } from './components/Navigation.tsx';
@@ -55,6 +56,8 @@ function AppContent() {
         );
       case 'leaderboard':
         return <LeaderboardScreen />;
+      case 'tournaments':
+        return <TournamentsScreen />;
       case 'courts':
         return <CourtsScreen />;
       case 'scorekeeper':

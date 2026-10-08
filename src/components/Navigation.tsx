@@ -14,6 +14,7 @@ import {
   Maximize2,
   Bell,
   Settings,
+  Swords,
 } from 'lucide-react';
 
 interface NavigationProps {
@@ -52,19 +53,19 @@ export function TopBar({
         avatar_url: '/src/assets/images/frannnxx_avatar_1791277042121.jpg',
       });
     } else {
-      // Switch to Coach Marcus (Court Admin)
+      // Switch to Coach Marcus (Court Admin / Referee)
       switchUser({
         id: '00000000-0000-0000-0000-000000000001',
         full_name: 'Coach Marcus Sterling',
         email: 'marcus@pickleplay.com',
         role: 'court_admin',
-        rank_points: 2240,
-        rank_tier: 'Diamond',
-        total_xp: 8400,
-        wins: 78,
-        losses: 14,
-        dupr_id: 'DUPR-99214',
-        skill_rating: 4.85,
+        rank_points: 0,
+        rank_tier: 'Bronze',
+        total_xp: 0,
+        wins: 0,
+        losses: 0,
+        dupr_id: 'REF-99214',
+        skill_rating: 0,
         avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80',
       });
     }
@@ -100,6 +101,15 @@ export function TopBar({
           }`}
         >
           Leaderboards
+        </button>
+        <button
+          onClick={() => onSelectTab('tournaments')}
+          className={`transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+            currentTab === 'tournaments' ? 'text-emerald-400 font-bold' : 'hover:text-slate-200'
+          }`}
+        >
+          <Swords className="w-3.5 h-3.5 text-emerald-400" />
+          <span>Tournaments</span>
         </button>
         <button
           onClick={() => onSelectTab('courts')}
@@ -175,7 +185,11 @@ export function TopBar({
                 ? 'bg-emerald-950/60 text-emerald-300 border-emerald-500/50'
                 : 'bg-slate-900 text-slate-200 border-slate-800'
             }`}
-            title="Click to toggle between Player and Referee account"
+            title={
+              isCourtAdmin
+                ? 'Referee (Court Scoring Only) — Click to switch to Player to play matches'
+                : 'Player (Competitive Ladder) — Click to switch to Referee'
+            }
           >
             {isCourtAdmin ? (
               <Shield className="w-3.5 h-3.5 text-emerald-400" />
@@ -217,7 +231,8 @@ export function BottomTabBar({
   const tabs = isCourtAdmin
     ? [
         { id: 'dashboard', label: 'Dashboard', icon: Activity },
-        { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
+        { id: 'leaderboard', label: 'Rankings', icon: Trophy },
+        { id: 'tournaments', label: 'Tournaments', icon: Swords },
         { id: 'courts', label: 'Courts', icon: Calendar },
         {
           id: 'scorekeeper',
@@ -229,7 +244,8 @@ export function BottomTabBar({
       ]
     : [
         { id: 'dashboard', label: 'Dashboard', icon: Activity },
-        { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
+        { id: 'leaderboard', label: 'Rankings', icon: Trophy },
+        { id: 'tournaments', label: 'Tournaments', icon: Swords },
         { id: 'courts', label: 'Courts', icon: Calendar },
         { id: 'profile', label: 'Profile', icon: User },
       ];

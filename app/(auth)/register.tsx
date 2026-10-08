@@ -105,7 +105,7 @@ export default function RegisterScreen({ onNavigateLogin, onSuccess }: RegisterS
                   {role === 'court_admin' && <Check className="w-3.5 h-3.5 text-emerald-400" />}
                 </div>
                 <p className="text-[11px] text-slate-400 leading-tight">
-                  Facility owner & official referee. Full official scorekeeper console.
+                  Facility owner & official referee. Court management & scoring only (to play, register as a Player).
                 </p>
               </button>
             </div>
@@ -115,7 +115,7 @@ export default function RegisterScreen({ onNavigateLogin, onSuccess }: RegisterS
               <span>
                 {role === 'player'
                   ? 'As a Player, match integrity is guaranteed: scores must be validated by an authorized Court Admin or referee.'
-                  : 'As a Court Admin, you are granted certified scorekeeping privileges to enter match scores and adjust player ELO.'}
+                  : 'As a Court Admin / Referee, you hold scorekeeping and court management authority. Referees cannot play on this account to guarantee neutrality.'}
               </span>
             </div>
           </div>

@@ -10,8 +10,6 @@ import {
   Lock,
   Mail,
   User,
-  Activity,
-  Calendar,
   Sparkles,
   AlertCircle,
 } from 'lucide-react';
@@ -118,7 +116,7 @@ export default function AuthPortal({ initialMode = 'login' }: AuthPortalProps) {
 
           {/* Brand header */}
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 mb-4">
+            <div className="inline-flex items-center gap-2">
               <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-md">
                 <Trophy className="w-5 h-5 text-emerald-400" />
               </div>
@@ -126,61 +124,26 @@ export default function AuthPortal({ initialMode = 'login' }: AuthPortalProps) {
                 <h1 className="text-2xl font-black tracking-tight text-white font-['Cabinet_Grotesk'] leading-none">
                   PICKLE<span className="text-emerald-400">PLAY</span>
                 </h1>
-                <span className="text-[11px] text-slate-400 font-mono">Competitive Sports Portal</span>
-              </div>
-            </div>
-
-            <p className="text-xs text-slate-300 leading-relaxed mb-6">
-              The premier platform for competitive pickleball ladder grinding, verified referee scorekeeping, and Stripe court reservations.
-            </p>
-          </div>
-
-          {/* Feature Highlights */}
-          <div className="relative z-10 space-y-3 my-4">
-            <div className="flex items-start gap-2.5 text-xs text-slate-300">
-              <Shield className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-white block font-semibold">Zero-Bias Scorekeeping</strong>
-                <span className="text-[11px] text-slate-400">Only verified Court Admins and referees score matches to prevent bias.</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-2.5 text-xs text-slate-300">
-              <Activity className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-white block font-semibold">Real-Time Elo & DUPR Sync</strong>
-                <span className="text-[11px] text-slate-400">Win matches, earn XP, and climb divisions from Bronze to Pickle Master.</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-2.5 text-xs text-slate-300">
-              <Calendar className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-white block font-semibold">Instant Stripe Court Passes</strong>
-                <span className="text-[11px] text-slate-400">Reserve indoor/outdoor championship courts with one tap.</span>
               </div>
             </div>
           </div>
 
           {/* Quick Demo Pre-fills */}
           <div className="relative z-10 mt-4 pt-4 border-t border-slate-800">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
-              Quick Test Credentials
-            </span>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => handleFillDemo('player')}
                 className="py-1.5 px-2 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-[11px] font-bold text-slate-200 border border-slate-700/80 text-center transition-all"
               >
-                🎮 Demo Player
+                Player
               </button>
               <button
                 type="button"
                 onClick={() => handleFillDemo('admin')}
                 className="py-1.5 px-2 rounded-lg bg-emerald-950/60 hover:bg-emerald-900/60 text-[11px] font-bold text-emerald-300 border border-emerald-500/30 text-center transition-all"
               >
-                🛡️ Demo Referee
+                Admin
               </button>
             </div>
           </div>
@@ -261,9 +224,6 @@ export default function AuthPortal({ initialMode = 'login' }: AuthPortalProps) {
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
                   <h2 className="text-xl font-bold text-white mb-1">Sign In to Your Account</h2>
-                  <p className="text-xs text-slate-400">
-                    Enter your email or username to access your player profile or referee scorepad.
-                  </p>
                 </div>
 
                 <div>
@@ -284,12 +244,7 @@ export default function AuthPortal({ initialMode = 'login' }: AuthPortalProps) {
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-semibold text-slate-300">Password</label>
-                    <span className="text-[11px] text-emerald-400 hover:underline cursor-pointer">
-                      Demo mode: any password
-                    </span>
-                  </div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
                   <div className="relative">
                     <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
@@ -372,7 +327,7 @@ export default function AuthPortal({ initialMode = 'login' }: AuthPortalProps) {
                         {role === 'court_admin' && <Check className="w-3.5 h-3.5 text-emerald-400" />}
                       </div>
                       <p className="text-[11px] text-slate-400 leading-tight">
-                        Facility manager & referee. Has official scorekeeping authority.
+                        Facility manager & referee. Manages courts & enters scores only (cannot play on referee account).
                       </p>
                     </button>
                   </div>

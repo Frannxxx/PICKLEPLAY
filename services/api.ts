@@ -7,6 +7,8 @@ import {
   LeaderboardEntry,
   Booking,
   UserRole,
+  Tournament,
+  BracketMatch,
 } from '../src/types.ts';
 
 const API_BASE_URL =
@@ -98,6 +100,64 @@ export const api = {
   courts: {
     getCourts: async () => {
       return request<{ success: boolean; count: number; data: Court[] }>('/api/courts');
+    },
+    getActivityToday: async () => {
+      return request<{
+        success: boolean;
+        data: {
+          totalPlayersToday: number;
+          totalMatchesToday: number;
+          totalCourts: number;
+          totalActiveCourts: number;
+          occupancyPercentage: number;
+          activeRefereesCount: number;
+          facilities: Array<{
+            id: string;
+            name: string;
+            shortName: string;
+            address: string;
+            image_url: string;
+            total_courts: number;
+            active_courts: number;
+            players_today: number;
+            status_label: string;
+            lighting_status: string;
+            surface_type: string;
+            court_slots: Array<{
+              courtNumber: number;
+              status: 'occupied' | 'available' | 'reserved';
+              title: string;
+              players: string;
+              score?: string;
+              referee?: string;
+            }>;
+            recentUpdate: string;
+          }>;
+          feed: Array<{
+            id: string;
+            time: string;
+            courtName: string;
+            type: string;
+            text: string;
+            badge?: string;
+          }>;
+          updatedAt: string;
+        };
+      }>('/api/courts/activity/today');
+    },
+    updateActivity: async (params: {
+      message?: string;
+      courtId?: string;
+      addedPlayers?: number;
+      statusText?: string;
+    }) => {
+      return request<{
+        success: boolean;
+        data: any;
+      }>('/api/courts/activity/update', {
+        method: 'POST',
+        body: JSON.stringify(params),
+      });
     },
     getCourtById: async (id: string) => {
       return request<{ success: boolean; data: Court & { availableSlots: any[] } }>(`/api/courts/${id}`);
@@ -229,6 +289,72 @@ export const api = {
         method: 'POST',
         body: JSON.stringify({ duprId }),
       });
+    },
+  },
+  tournaments: {
+    getAll: async (status?: string) => {
+      const query = status && status !== 'all' ? `?status=${encodeURIComponent(status)}` : '';
+      return request<{ success: boolean; count: number; data: Tournament[] }>(`/api/tournaments${query}`);
+    },
+    getById: async (id: string) => {
+      return request<{ success: boolean; data: Tournament }>(`/api/tournaments/${encodeURIComponent(id)}`);
+    },
+    create: async (params: Partial<Tournament>) => {
+      return request<{ success: boolean; message: string; data: Tournament }>('/api/tournaments', {
+        method: 'POST',
+        body: JSON.stringify(params),
+      });
+    },
+    join: async (id: string) => {
+      return request<{ success: boolean; message: string; data: Tournament }>(
+        `/api/tournaments/${encodeURIComponent(id)}/join`,
+        { method: 'POST' }
+      );
+    },
+    leave: async (id: string) => {
+      return request<{ success: boolean; message: string; data: Tournament }>(
+        `/api/tournaments/${encodeURIComponent(id)}/leave`,
+        { method: 'POST' }
+      );
+    },
+    generateBracket: async (id: string) => {
+      return request<{ success: boolean; message: string; data: Tournament }>(
+        `/api/tournaments/${encodeURIComponent(id)}/bracket/generate`,
+        { method: 'POST' }
+      );
+    },
+    updateMatchScore: async (
+      tournamentId: string,
+      matchId: string,
+      params: {
+        score1?: number;
+        score2?: number;
+        winnerId?: string;
+        status?: 'pending' | 'in_progress' | 'completed';
+      }
+    ) => {
+      return request<{ success: boolean; message: string; data: Tournament; match?: BracketMatch }>(
+        `/api/tournaments/${encodeURIComponent(tournamentId)}/matches/${encodeURIComponent(matchId)}`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify(params),
+        }
+      );
+    },
+    complete: async (id: string, championId: string) => {
+      return request<{ success: boolean; message: string; data: Tournament }>(
+        `/api/tournaments/${encodeURIComponent(id)}/complete`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ championId }),
+        }
+      );
+    },
+    delete: async (id: string) => {
+      return request<{ success: boolean; message: string }>(
+        `/api/tournaments/${encodeURIComponent(id)}`,
+        { method: 'DELETE' }
+      );
     },
   },
 };
