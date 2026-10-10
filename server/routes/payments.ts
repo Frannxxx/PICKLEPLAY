@@ -1,9 +1,10 @@
-import { Router, Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import Stripe from 'stripe';
 import { authenticateUser } from '../middleware/auth.ts';
 import { getCourtById, createBooking } from '../store.ts';
 
-const router = Router();
+const router = express.Router();
 
 // Initialize Stripe SDK with graceful fallback
 const stripeApiKey = process.env.STRIPE_SECRET_KEY || 'sk_test_mock_pickleplay_standard_key';

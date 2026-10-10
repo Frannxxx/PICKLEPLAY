@@ -1,4 +1,4 @@
-import { Profile, RankTier, TeamLetter, PlayerRatingAdjustment, EloAdjustmentResult } from '../../src/types.ts';
+import type { Profile, RankTier, TeamLetter, PlayerRatingAdjustment, EloAdjustmentResult } from '../../src/types.ts';
 
 /**
  * Determine Rank Tier based on current Elo rank points.

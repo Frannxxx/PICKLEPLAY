@@ -143,16 +143,6 @@ export function TopBar({
 
       {/* Zone 3: 1-2 primary actions + user state */}
       <div className="flex items-center gap-2.5">
-        {/* SQL & Architecture Inspector Button */}
-        <button
-          onClick={onOpenSchemaModal}
-          className="hidden sm:flex items-center gap-1.5 py-1.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-800 active:scale-95 transition-all"
-          title="Inspect PostgreSQL Schema & RLS Policies"
-        >
-          <Database className="w-3.5 h-3.5 text-emerald-400" />
-          <span>SQL & RLS</span>
-        </button>
-
         {/* Notification Bell Button */}
         <button
           onClick={onOpenNotifications}

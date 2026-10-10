@@ -282,37 +282,8 @@ export default function DashboardScreen({ onNavigateTab, onOpenMatchModal }: Das
           </div>
         )}
 
-        {/* PROGRESS BAR (PLAYERS) OR COURT MANAGEMENT NOTICE (REFEREES) */}
-        {isCourtAdmin ? (
-          <div className="relative z-10 mt-4 p-3.5 rounded-2xl bg-slate-950/90 border border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="font-bold text-white block">Official Neutrality Mandate</span>
-                <span className="text-[11px] text-slate-400">
-                  Referees focus exclusively on court scoring and facility management. To play and earn ladder records, register as a Player athlete.
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
-              <button
-                onClick={() => onNavigateTab?.('scorekeeper')}
-                className="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shrink-0 flex items-center justify-center gap-1.5 shadow active:scale-95 transition-all"
-              >
-                <Trophy className="w-3.5 h-3.5 text-slate-950" />
-                <span>Scorepad Console</span>
-              </button>
-              <button
-                onClick={() => onNavigateTab?.('profile')}
-                className="flex-1 sm:flex-initial px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold text-xs border border-emerald-500/30 shrink-0 flex items-center justify-center gap-1 shadow"
-              >
-                <span>Register Player</span>
-              </button>
-            </div>
-          </div>
-        ) : (
+        {/* PROGRESS BAR (PLAYERS ONLY) */}
+        {!isCourtAdmin && (
           <div className="relative z-10 mt-4">
             <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
               <span className="flex items-center gap-1 font-medium">

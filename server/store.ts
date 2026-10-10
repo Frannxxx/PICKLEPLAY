@@ -1,4 +1,4 @@
-import { Profile, Court, Match, Booking, LeaderboardEntry, MatchPlayer, CourtReview, Tournament, TournamentRound, BracketMatch, TournamentPlayer } from '../src/types.ts';
+import type { Profile, Court, Match, Booking, LeaderboardEntry, MatchPlayer, CourtReview, Tournament, TournamentRound, BracketMatch, TournamentPlayer } from '../src/types.ts';
 
 // Initial Mock Profiles
 let profiles: Profile[] = [

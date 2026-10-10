@@ -1,7 +1,8 @@
-import { Router, Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import { getLeaderboard } from '../store.ts';
 
-const router = Router();
+const router = express.Router();
 
 /**
  * GET /api/leaderboard

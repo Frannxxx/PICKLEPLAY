@@ -1,8 +1,9 @@
-import { Router, Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import { authenticateUser } from '../middleware/auth.ts';
 import { updateProfile, getProfileById } from '../store.ts';
 
-const router = Router();
+const router = express.Router();
 
 /**
  * POST /api/dupr/sync

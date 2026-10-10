@@ -1,8 +1,9 @@
-import { Router, Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import { getAllProfiles, getProfileById, createProfile, updateProfile } from '../store.ts';
-import { Profile, UserRole } from '../../src/types.ts';
+import type { Profile, UserRole } from '../../src/types.ts';
 
-const router = Router();
+const router = express.Router();
 
 /**
  * GET /api/auth/demo-users

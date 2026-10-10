@@ -1,4 +1,5 @@
-import { Router, Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import { authenticateUser } from '../middleware/auth.ts';
 import {
   getAllTournaments,
@@ -12,7 +13,7 @@ import {
   deleteTournament,
 } from '../store.ts';
 
-const router = Router();
+const router = express.Router();
 
 /**
  * GET /api/tournaments

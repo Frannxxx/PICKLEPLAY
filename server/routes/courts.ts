@@ -1,9 +1,10 @@
-import { Router, Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import { authenticateUser, requireCourtAdmin } from '../middleware/auth.ts';
 import { getAllCourts, getCourtById, addCourtReview, getCourtActivityToday, updateCourtActivity } from '../store.ts';
-import { Court, CourtReview } from '../../src/types.ts';
+import type { Court, CourtReview } from '../../src/types.ts';
 
-const router = Router();
+const router = express.Router();
 
 /**
  * GET /api/courts

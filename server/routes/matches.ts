@@ -1,9 +1,10 @@
-import { Router, Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import { authenticateUser } from '../middleware/auth.ts';
 import { getAllMatches, getMatchById, createMatch, updateMatch, getProfileById, getCourtById } from '../store.ts';
-import { Match, MatchPlayer } from '../../src/types.ts';
+import type { Match, MatchPlayer } from '../../src/types.ts';
 
-const router = Router();
+const router = express.Router();
 
 /**
  * GET /api/matches

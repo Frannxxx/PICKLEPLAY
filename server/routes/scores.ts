@@ -1,10 +1,11 @@
-import { Router, Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import { authenticateUser, requireCourtAdmin } from '../middleware/auth.ts';
 import { calculateMatchEloAndXp } from '../controllers/ranking.ts';
 import { getMatchById, updateMatch, getProfileById, updateProfile } from '../store.ts';
-import { Profile } from '../../src/types.ts';
+import type { Profile } from '../../src/types.ts';
 
-const router = Router();
+const router = express.Router();
 
 /**
  * POST /api/scores/live-update

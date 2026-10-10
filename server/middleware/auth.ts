@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { Profile, UserRole } from '../../src/types.ts';
+import type { Request, Response, NextFunction } from 'express';
+import type { Profile, UserRole } from '../../src/types.ts';
 import { getProfileById } from '../store.ts';
 
 // Extend Express Request type
