@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "start": "node server.ts"
+    "start": "node server.ts",
+    "mobile": "bash run-mobile.sh",
+    "expo": "cd mobile && npx expo start"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
