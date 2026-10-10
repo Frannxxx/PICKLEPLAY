@@ -178,6 +178,26 @@ let courts: Court[] = [
     image_url: '/src/assets/images/court_venue_metro_1790512684659.jpg',
     created_at: new Date(Date.now() - 30 * 86400000).toISOString(),
   },
+  {
+    id: '55555555-5555-5555-5555-555555555555',
+    name: 'Spin & Smash Pickleball Pavilion',
+    owner_id: '00000000-0000-0000-0000-000000000001',
+    address: 'Visayan Village, National Highway, Tagum City, Davao del Norte, Philippines',
+    total_courts: 6,
+    is_indoor: true,
+    hourly_rate: 320.0,
+    surface_type: 'Pro-Glide Olympic Cushion Acrylic',
+    amenities: [
+      'Prime National Highway Accessibility',
+      'Air-Cooled Player Pavilion & Lounge',
+      'Full LED Night Floodlights',
+      'DUPR Certified Camera Courts',
+      'Pro Equipment Shop & Paddle Rental',
+      'Hydration & Juice Bar',
+    ],
+    image_url: '/src/assets/images/court_venue_metro_1790512684659.jpg',
+    created_at: new Date(Date.now() - 20 * 86400000).toISOString(),
+  },
 ];
 
 // Initial Matches
@@ -599,6 +619,30 @@ let courtReviews: CourtReview[] = [
     tags: ['Net Quality', 'Amenities'],
     created_at: new Date(Date.now() - 6 * 86400000).toISOString(),
   },
+  {
+    id: 'rev-06',
+    court_id: '55555555-5555-5555-5555-555555555555',
+    user_id: '00000000-0000-0000-0000-000000000002',
+    user_name: 'Frannnxx',
+    user_avatar: '/src/assets/images/frannnxx_avatar_1791277042121.jpg',
+    user_role: 'Gold Player (ELO 1,680)',
+    rating: 5,
+    comment: 'Super convenient location along National Highway in Visayan Village! Spacious covered pavilion keeps courts cool and comfortable, and the Pro-Glide surface has fantastic grip.',
+    tags: ['Court Surface & Grip', 'Management & Staff', 'Night Lighting'],
+    created_at: new Date(Date.now() - 1 * 86400000).toISOString(),
+  },
+  {
+    id: 'rev-07',
+    court_id: '55555555-5555-5555-5555-555555555555',
+    user_id: '00000000-0000-0000-0000-000000000004',
+    user_name: 'Elena Rostova',
+    user_avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80',
+    user_role: 'Pickle Master (ELO 2,490)',
+    rating: 5,
+    comment: 'Top caliber pavilion with official tournament nets and elevated spectator viewing. Great venue for regional ladder showdowns and evening doubles in Tagum.',
+    tags: ['Net Quality & Tension', 'Spectator Bleachers'],
+    created_at: new Date(Date.now() - 2 * 86400000).toISOString(),
+  },
 ];
 
 export function getReviewsForCourt(courtId: string): CourtReview[] {
@@ -717,6 +761,14 @@ export function getLeaderboard(tierFilter?: string): LeaderboardEntry[] {
 let todayExtraWalkInPlayers = 6;
 let liveCourtFeed = [
   {
+    id: 'f-0',
+    time: 'Just now',
+    courtName: 'Spin & Smash Pickleball Pavilion',
+    type: 'status',
+    text: 'Grand opening match session active on National Highway, Visayan Village. Court 6 open for instant reservations.',
+    badge: 'Pavilion Live',
+  },
+  {
     id: 'f-1',
     time: '4m ago',
     courtName: 'City Pickle Grounds (CPG)',
@@ -763,6 +815,7 @@ export function getCourtActivityToday() {
   const mCentral = courts.find((c) => c.id === '22222222-2222-2222-2222-222222222222');
   const picklezone = courts.find((c) => c.id === '33333333-3333-3333-3333-333333333330');
   const palmCourt = courts.find((c) => c.id === '44444444-4444-4444-4444-444444444444');
+  const spinSmashCourt = courts.find((c) => c.id === '55555555-5555-5555-5555-555555555555');
 
   const facilities = [
     {
@@ -924,6 +977,70 @@ export function getCourtActivityToday() {
         },
       ],
       recentUpdate: 'Rainproof indoor courts running at full capacity. Next open rotation at 7:30 PM.',
+    },
+    {
+      id: spinSmashCourt?.id || '55555555-5555-5555-5555-555555555555',
+      name: 'Spin & Smash Pickleball Pavilion',
+      shortName: 'Spin & Smash Pavilion',
+      address: 'Visayan Village, National Highway, Tagum City',
+      image_url: spinSmashCourt?.image_url || '/src/assets/images/court_venue_metro_1790512684659.jpg',
+      total_courts: 6,
+      active_courts: 5,
+      players_today: 22 + Math.floor(todayExtraWalkInPlayers * 0.4),
+      status_label: 'Prime Highway Hub',
+      lighting_status: 'Full LED Night Floodlights ON',
+      surface_type: 'Pro-Glide Olympic Cushion Acrylic',
+      court_slots: [
+        {
+          courtNumber: 1,
+          status: 'occupied',
+          title: 'Spin & Smash Grand Open Warmup',
+          players: 'Frannnxx & Sam "Spin" vs Challengers',
+          score: '9-7 (Game 1)',
+          referee: 'Certified Official',
+        },
+        {
+          courtNumber: 2,
+          status: 'occupied',
+          title: 'Visayan Village Doubles Ladder',
+          players: 'Jordan Cruz & Partner vs Contenders',
+          score: '11-6',
+          referee: 'Head Scorer',
+        },
+        {
+          courtNumber: 3,
+          status: 'occupied',
+          title: 'DUPR Rated Singles Duel',
+          players: 'Gold Tier Athletes',
+          score: '8-8',
+          referee: 'Official Scorer',
+        },
+        {
+          courtNumber: 4,
+          status: 'occupied',
+          title: 'Open Clinic & High-Velocity Drills',
+          players: 'Pavilion Training Group',
+          score: 'Rallies',
+          referee: 'Pavilion Coach',
+        },
+        {
+          courtNumber: 5,
+          status: 'occupied',
+          title: 'Evening Match Play',
+          players: '4 Checked-in Players',
+          score: '10-4',
+          referee: 'Assigned',
+        },
+        {
+          courtNumber: 6,
+          status: 'available',
+          title: 'Instant Online Reservation / Walk-in',
+          players: 'Open for Booking',
+          score: 'Ready',
+          referee: 'None',
+        },
+      ],
+      recentUpdate: 'Spin & Smash Pavilion open along Visayan Village National Highway. Courts 1-5 active, Court 6 ready for instant reservation.',
     },
   ];
 
@@ -1684,6 +1801,62 @@ let tournaments: Tournament[] = [
       dupr_id: 'DUPR-38190',
       registered_at: '2026-09-18T11:00:00Z',
     },
+  },
+  {
+    id: 'tourn-spin-smash',
+    title: 'Spin & Smash Pavilion Grand Open 2026',
+    description: 'Premier inaugural championship tournament celebrating the grand opening of Spin & Smash Pickleball Pavilion along National Highway, Visayan Village. DUPR points verified by certified regional officials.',
+    category: 'Open Doubles',
+    skill_level: 'All Skill Levels (Open)',
+    format: 'Single Elimination (8 Players)',
+    max_participants: 8,
+    venue_name: 'Spin & Smash Pickleball Pavilion',
+    venue_address: 'Visayan Village, National Highway, Tagum City',
+    start_date: '2026-10-22T08:00:00Z',
+    end_date: '2026-10-24T18:00:00Z',
+    registration_deadline: '2026-10-21T23:59:59Z',
+    entry_fee: 350,
+    prize_pool: 20000,
+    banner_image_url: '/src/assets/images/court_venue_metro_1790512684659.jpg',
+    status: 'registration_open',
+    created_by_admin_id: '00000000-0000-0000-0000-000000000001',
+    created_at: new Date(Date.now() - 1 * 86400000).toISOString(),
+    participants: [
+      {
+        id: 'tp-ss-02',
+        player_id: '00000000-0000-0000-0000-000000000002',
+        seed: 1,
+        full_name: 'Frannnxx',
+        avatar_url: '/src/assets/images/frannnxx_avatar_1791277042121.jpg',
+        skill_rating: 4.15,
+        rank_tier: 'Gold',
+        dupr_id: 'DUPR-54812',
+        registered_at: '2026-10-08T10:00:00Z',
+      },
+      {
+        id: 'tp-ss-07',
+        player_id: '00000000-0000-0000-0000-000000000007',
+        seed: 2,
+        full_name: 'Sam "Spin" Kowalski',
+        avatar_url: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&h=200&q=80',
+        skill_rating: 4.80,
+        rank_tier: 'Diamond',
+        dupr_id: 'DUPR-49120',
+        registered_at: '2026-10-08T11:30:00Z',
+      },
+      {
+        id: 'tp-ss-03',
+        player_id: '00000000-0000-0000-0000-000000000003',
+        seed: 3,
+        full_name: 'Jordan Cruz',
+        avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80',
+        skill_rating: 4.45,
+        rank_tier: 'Platinum',
+        dupr_id: 'DUPR-38190',
+        registered_at: '2026-10-08T14:15:00Z',
+      },
+    ],
+    rounds: [],
   },
 ];
 

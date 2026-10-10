@@ -912,6 +912,70 @@ export default function ProfileScreen({ onNavigateTab }: ProfileScreenProps) {
                 ],
                 recentUpdate: 'Rainproof indoor courts running at full capacity. Next open rotation at 7:30 PM.',
               },
+              {
+                id: '55555555-5555-5555-5555-555555555555',
+                name: 'Spin & Smash Pickleball Pavilion',
+                shortName: 'Spin & Smash Pavilion',
+                address: 'Visayan Village, National Highway, Tagum City',
+                image_url: '/src/assets/images/court_venue_metro_1790512684659.jpg',
+                total_courts: 6,
+                active_courts: 5,
+                players_today: 22,
+                status_label: 'Prime Highway Hub',
+                lighting_status: 'Full LED Night Floodlights ON',
+                surface_type: 'Pro-Glide Olympic Cushion Acrylic',
+                court_slots: [
+                  {
+                    courtNumber: 1,
+                    status: 'occupied',
+                    title: 'Spin & Smash Grand Open Warmup',
+                    players: 'Frannnxx & Sam "Spin" vs Challengers',
+                    score: '9-7 (Game 1)',
+                    referee: 'Certified Official',
+                  },
+                  {
+                    courtNumber: 2,
+                    status: 'occupied',
+                    title: 'Visayan Village Doubles Ladder',
+                    players: 'Jordan Cruz & Partner vs Contenders',
+                    score: '11-6',
+                    referee: 'Head Scorer',
+                  },
+                  {
+                    courtNumber: 3,
+                    status: 'occupied',
+                    title: 'DUPR Rated Singles Duel',
+                    players: 'Gold Tier Athletes',
+                    score: '8-8',
+                    referee: 'Official Scorer',
+                  },
+                  {
+                    courtNumber: 4,
+                    status: 'occupied',
+                    title: 'Open Clinic & High-Velocity Drills',
+                    players: 'Pavilion Training Group',
+                    score: 'Rallies',
+                    referee: 'Pavilion Coach',
+                  },
+                  {
+                    courtNumber: 5,
+                    status: 'occupied',
+                    title: 'Evening Match Play',
+                    players: '4 Checked-in Players',
+                    score: '10-4',
+                    referee: 'Assigned',
+                  },
+                  {
+                    courtNumber: 6,
+                    status: 'available',
+                    title: 'Instant Online Reservation / Walk-in',
+                    players: 'Open for Booking',
+                    score: 'Ready',
+                    referee: 'None',
+                  },
+                ],
+                recentUpdate: 'Spin & Smash Pavilion open along Visayan Village National Highway. Courts 1-5 active, Court 6 ready for instant reservation.',
+              },
             ])
               .filter((fac: any) => selectedFacilityFilter === 'all' || fac.id === selectedFacilityFilter)
               .map((fac: any) => (
@@ -1046,6 +1110,13 @@ export default function ProfileScreen({ onNavigateTab }: ProfileScreenProps) {
 
             <div className="space-y-2">
               {(courtActivity?.feed || [
+                {
+                  id: 'f-0',
+                  time: 'Just now',
+                  courtName: 'Spin & Smash Pickleball Pavilion',
+                  text: 'Grand opening match session active on National Highway, Visayan Village. Court 6 open for instant reservations.',
+                  badge: 'Pavilion Live',
+                },
                 {
                   id: 'f-1',
                   time: '4m ago',

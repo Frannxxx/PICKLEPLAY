@@ -10,6 +10,11 @@ interface CreateTournamentModalProps {
 
 const VENUE_OPTIONS = [
   {
+    name: 'Spin & Smash Pickleball Pavilion',
+    address: 'Visayan Village, National Highway, Tagum City',
+    image: '/src/assets/images/court_venue_metro_1790512684659.jpg',
+  },
+  {
     name: 'Tagum Central Pickleball Complex',
     address: 'Pioneer Ave, Magugpo Poblacion, Tagum City',
     image: '/src/assets/images/tagum_championship_trophy_1791477380864.jpg',

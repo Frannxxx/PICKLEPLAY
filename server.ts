@@ -77,9 +77,20 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`PicklePlay High-Performance Server running on port ${PORT}`);
-  });
+  function listenOnPort(portToTry: number) {
+    app.listen(portToTry, '0.0.0.0', () => {
+      console.log(`PicklePlay High-Performance Server running on http://localhost:${portToTry}`);
+    }).on('error', (err: any) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`Port ${portToTry} is busy, trying port ${portToTry + 1}...`);
+        listenOnPort(portToTry + 1);
+      } else {
+        console.error('Failed to start server:', err);
+        process.exit(1);
+      }
+    });
+  }
+  listenOnPort(PORT);
 }
 
 startServer().catch((err) => {
